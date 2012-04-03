@@ -1,0 +1,50 @@
+<div class="row">
+  <div class="span16">
+    <img align="left" style="margin-right: 8px;" src="<%= get_gravatar(@user.email, 90) %>"/><h2><%= link_to @user.name, @user %> <span class="label success inlinelabel"><%= @user.role %></span>
+    <% if signed_in? && has_auth?(@user)  %>
+      <span class="label warning inlinelabel"><%= link_to 'Edit', edit_user_path(@user) %></span>
+      <span class="label important inlinelabel"><%= link_to "delete", @user, :method => :delete, :confirm => "You sure?", :title => "Delete #{@user.name}" %></span>
+    <% end %></h2>
+
+    <p><b>Email:</b> <%= @user.email %><br/>
+      <b>About:</b> <%= @user.about %>
+    </p>
+    <br>
+
+    <% Course.all.each do |course| %>
+    <% if course.user!=@user && course.quizzes.count > 0 %>
+    <h3><%= link_to course.name, course %></h3>
+    <table id="userTable" class="zebra-striped">
+      <thead>
+        <tr>
+        <th class="green header headerSortUp">Quiz Name</th>
+        <th class="blue header">Result</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% course.quizzes.each do |quiz| %>
+        <tr>
+          <td><%= link_to quiz.name, course_quiz_path(course, quiz) %> <code><%= quiz.questions.count %></code></td>
+          <td>
+          <% 
+            total_correct = 0
+            for question in quiz.questions
+              submission = Submission.where(:user_id => @user.id, :question_id => question.id)[0]
+              if !submission.nil? && submission.answer == question.answer
+                  total_correct += 1
+              end
+            end
+          %>
+          <strong><%= total_correct %> / <%= quiz.questions.count %></strong> <% if quiz.questions.count > 0 %>(~<%= total_correct * 100 / quiz.questions.count %>%)<% end %>
+          </td>
+        <% end %>
+      </tbody>
+    </table>
+    <% end %>
+    <% end %>
+
+  <br>
+  <p>New user? <%= link_to "Sign up now!", signup_path %> | <%= link_to 'Browse users', users_path %> </p>
+
+  </div>
+</div>

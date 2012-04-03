@@ -1,0 +1,29 @@
+<div class="page-header">
+  <h1>QuizApp Users (<%= @users.count %>) <small>List of people using QuizApp</small></h1>
+</div>
+<div class="row">
+  <div class="span16">
+    <table id="userTable" class="zebra-striped">
+      <thead>
+        <tr>
+        <th class="green header headerSortUp">Name</th>
+        <th class="blue header">Email</th>
+        <th class="yellow header">About</th>
+        </tr>
+      </thead>
+      <tbody>
+      <% @users.each do |user| %>
+        <tr>
+          <td><img align="left" style="margin-right: 5px;" src="<%= get_gravatar(user.email, 24) %>"/> <%= link_to user.name, user %> <span class="label success inlinelabel"><%= user.role %></span> 
+          <% if signed_in? && has_auth?(user)  %>
+            <span class="label warning inlinelabel"><%= link_to 'Edit', edit_user_path(user) %></span>
+            <span class="label important inlinelabel"><%= link_to "delete", user, :method => :delete, :confirm => "You sure?", :title => "Delete #{user.name}" %></span>
+          <% end %></td>
+          <td><%= user.email %></td>
+          <td><%= user.about %></td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

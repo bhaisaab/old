@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>QuizApp | <%= @title %></title>
+    <meta name="description" content="Quiz application for  Department of Computer Engineering, IIT-BHU.">
+    <meta name="author" content="Rohit Yadav">
+    <%= stylesheet_link_tag :all %>
+    <%= javascript_include_tag :all %>
+    <%= csrf_meta_tag %>
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link rel="shortcut icon" href="/favicon.ico">
+    <style type="text/css">
+      /* Override some defaults */
+      html, body {
+        background-color: #eee;
+      }
+      body {
+        padding-top: 40px; /* 40px to make the container go all the way to the bottom of the topbar */
+      }
+      .container > footer p {
+        text-align: center; /* center align it with the container */
+      }
+
+      /* The white background content wrapper */
+      .content {
+        background-color: #fff;
+        padding: 20px;
+        margin: 0 -20px; /* negative indent the amount of the padding to maintain the grid system */
+        -webkit-border-radius: 0 0 6px 6px;
+           -moz-border-radius: 0 0 6px 6px;
+                border-radius: 0 0 6px 6px;
+        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.15);
+           -moz-box-shadow: 0 1px 2px rgba(0,0,0,.15);
+                box-shadow: 0 1px 2px rgba(0,0,0,.15);
+      }
+
+      /* Page header tweaks */
+      .page-header {
+        background-color: #f5f5f5;
+        padding: 20px 20px 10px;
+        margin: -20px -20px 20px;
+      }
+
+      /* Give a quick and non-cross-browser friendly divider */
+      .content .span4 {
+        margin-left: 0;
+        padding-left: 19px;
+        border-left: 1px solid #eee;
+      }
+
+      .topbar .btn {
+        border: 0;
+      }
+
+    </style>
+  </head>
+
+  <body>
+
+    <div class="topbar" data-dropdown="dropdown">
+      <div class="fill">
+        <div class="container">
+          <a class="brand" href="/"><img src="/images/logo.png" height='18'> QuizApp</a>
+          <ul class="nav">
+            <li <% if request.fullpath == "/" %>class="active"<% end %>> <%= link_to "Home", '/' %></li>
+            <li class= "menu<% if request.fullpath == "/courses" %> active<% end %>"><%= link_to "Courses", '#', :class => "menu" %>
+              <ul class="menu-dropdown">
+                <% Course.all.each do |course| %>
+                <li><%= link_to course.name, course %></li>
+                <% end %>
+                <li class="divider"></li>
+                <li><%= link_to 'List All', courses_path %></li>
+                <% if signed_in? %><li><%= link_to 'Create New', new_course_path %></li><% end %>
+              </ul>
+            </li>
+            <li <% if request.fullpath == "/users" %>class="active"<% end %>><%= link_to "People", '/users' %></li>
+            <li <% if request.fullpath == "/help" %>class="active"<% end %>><%= link_to "Help", '/help' %></li>
+            <li <% if request.fullpath == "/about" %>class="active"<% end %>><%= link_to "About", '/about' %></li>
+          </ul>
+          <% if not signed_in? %>
+          <p class="pull-right">
+            <a href="<%= signup_path %>">New user? <b>Sign up »</b></a> <b>|</b> <a href="<%= signin_path %>"><b>Login »</b></a>
+          </p>
+          <% else %>
+          <ul class="nav secondary-nav">
+            <li class="menu">
+              <a href="#" class="menu"><img align="left" style="margin-right: 8px;" src="<%= get_gravatar(current_user.email, 24) %>"/> <b><%= current_user.name %></b> </a>
+              <ul class="menu-dropdown">
+                <li><%= link_to "My Profile", current_user %></li>
+                <li><%= link_to 'Settings', edit_user_path(current_user) %></li>
+                <li class="divider"></li>
+                <li><%= link_to "Sign out", signout_path, :method => :delete %></li>
+              </ul>
+            </li>
+          </ul>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="content">
+        <!-- Allowed key can be success, warning, error, info-->
+        <% flash.each do |key, value| %>
+          <div class="alert-message <%= key %>" data-alert="alert"><%= value %><a class="close" href="#">×</a></div>
+        <% end %> 
+        <%= yield %>
+      </div>
+
+      <footer>
+        <p>Created by <a href="http://rohityadav.in">Rohit Yadav</a> | Fork at <a href="https://github.com/rohityadav/quizapp">Github</a></p>
+      </footer>
+    </div>
+  </body>
+</html>

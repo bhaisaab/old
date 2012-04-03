@@ -1,0 +1,39 @@
+<%= form_for(@course) do |f| %>
+  <% if @course.errors.any? %>
+    <div class="alert-message block-message error">
+    <p><strong>Oh snap! You got an error!</strong></p>
+    <h3><%= pluralize(@course.errors.count, "error") %> found, please correct it:</h3>
+      <ul>
+      <% @course.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+
+  <div class="clearfix">
+    <label><%= f.label :name %></label>
+    <div class="input"><%= f.text_field :name %></div>
+  </div>
+
+  <div class="clearfix">
+    <label><%= f.label :description %></label>
+    <div class="input"><%= f.text_field :description %></div>
+  </div>
+
+  <% if signed_in? && is_admin?(@current_user) %>
+    <div class="clearfix">
+      <label><%= f.label :user_id %></label>
+      <div class="input">
+      <% userarray = User.all.map { |e| [e.name, e.id] } %>
+      <%= f.select :user_id, userarray %>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="actions">
+    <input id="course_submit" name="commit" type="submit" value="Submit" class="btn primary">
+  </div>
+
+<% end %>

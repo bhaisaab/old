@@ -1,0 +1,40 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Description:</b>
+  <%= @question.description %>
+</p>
+
+<p>
+  <b>Choice1:</b>
+  <%= @question.choice1 %>
+</p>
+
+<p>
+  <b>Choice2:</b>
+  <%= @question.choice2 %>
+</p>
+
+<p>
+  <b>Choice3:</b>
+  <%= @question.choice3 %>
+</p>
+
+<p>
+  <b>Choice4:</b>
+  <%= @question.choice4 %>
+</p>
+
+<p>
+  <b>Answer:</b>
+  <%= @question.answer %>
+</p>
+
+<p>
+  <b>Quiz:</b>
+  <%= @question.quiz_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_course_quiz_question_path(@quiz.course, @quiz, @question) %> |
+<%= link_to 'Back', course_quiz_path(@quiz.course, @quiz) %>

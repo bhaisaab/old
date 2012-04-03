@@ -1,0 +1,41 @@
+<div class="page-header">
+  <h3><%= link_to 'Courses', courses_path %> » <%= link_to @course.name, @course %> <small>by</small> <code> <img style="margin-right: 5px; margin-bottom: -5px;" src="<%= get_gravatar(@course.user.email, 16) %>"/><%= link_to @course.user.name, @course.user %></code>
+    <% if signed_in? && has_auth?(@course.user)  %>
+      <span class="label warning inlinelabel"><%= link_to 'Edit', edit_course_path(@course) %></span>
+      <span class="label important inlinelabel"><%= link_to "delete", @course, :method => :delete, :confirm => "You sure?", :title => "Delete #{@course.name}" %> </span>
+    <% end %></h3>
+    <small><%= @course.description %></small>
+</div>
+<div class="row">
+  <div class="span12">
+    <h3>Quizzes »
+    <% if signed_in? && has_auth?(@course.user)  %>
+      <span class="label success inlinelabel"><strong><%= link_to 'New', new_course_quiz_path(@course) %></strong></span>
+    <% end %></h3>
+    <% if @course.quizzes.count %>
+      <dl>
+      <% @course.quizzes.each do |quiz| %>
+        <dt><%= link_to quiz.name, course_quiz_path(@course, quiz) %> <code><%= quiz.questions.count %></code>
+          <% if signed_in? && has_auth?(@course.user)  %>
+            <span class="label warning inlinelabel"><%= link_to 'Edit', edit_course_quiz_path(@course, quiz) %></span>
+            <span class="label important inlinelabel"><%= link_to "delete", course_quiz_path(@course, quiz), :method => :delete, :confirm => "You sure?", :title => "Delete #{quiz.name}" %> </span>
+          <% end %>
+    <br/><dd><%= quiz.description %></dd></dt>
+      <% end %>
+      </dl>
+    <% end %>
+  </div>
+  <div class="span4">
+    <h4>Create New Quiz</h4>
+    <p>Create a quiz for this <code>course</code>. Simply click the button below to get started:</p>
+    <div  align="center">
+    <% if signed_in? %>
+      <%= link_to 'Create New Quiz', new_course_quiz_path(@course), :class => "btn primary" %>
+    <% else %>
+      <%= link_to "Sign in required!", signin_path, :class => "btn" %>      
+    <% end %>
+    </div>
+  </div>
+</div>
+
+<%= link_to 'Back to Courses List', courses_path %>

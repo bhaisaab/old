@@ -1,0 +1,21 @@
+<div class="page-header">
+  <h1>QuizApp Settings <small>Edit your QuizApp account</small></h1>
+</div>
+<div class="row">
+  <div class="span10">
+    <%= render 'form' %>
+  </div>
+  <div class="span4">
+    <% if signed_in? %>
+    <div class="alert-message block-message warning">
+    <img align="right" style="margin: 0px;" src="<%= get_gravatar(@user.email, 72) %>"/>
+    <h3>Set avatar</h3>
+    <p>Get your avatar at <strong><a target="_blank" href="http://gravatar.com">gravatar.com</a></strong>!</p>
+    </div>
+    <% end %>
+    <div class="alert-message block-message error">
+      <p><h4>Permanently delete your:</h4> QuizApp account, quizzes, submissions and results.</p><br/>
+      <%= link_to 'Delete My QuizApp', @user, :confirm => 'Are you sure, there is no turning back?', :method => :delete, :class => "btn large danger" %>
+    </div>
+  </div>
+</div>

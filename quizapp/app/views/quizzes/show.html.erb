@@ -1,0 +1,183 @@
+<div class="page-header">
+  <h3><%= link_to 'Courses', courses_path %> » <%= link_to @course.name, @course %> » <%= link_to @quiz.name, course_quiz_path(@course, @quiz) %> 
+  <% if signed_in? && has_auth?(@course.user)  %>
+    <span class="label warning inlinelabel"><%= link_to 'Edit', edit_course_quiz_path(@course, @quiz) %></span>
+    <span class="label important inlinelabel"><%= link_to "delete", course_quiz_path(@course, @quiz), :method => :delete, :confirm => "You sure?", :title => "Delete #{@quiz.name}" %> </span>
+    <% end %></h3>
+  <small><%= @quiz.description %></small>
+</div>
+<% if @quiz.questions.count && signed_in? && has_auth?(@course.user) %>
+<div class="row">
+  <div class="span16">
+    <ul data-tabs="tabs" class="tabs">
+      <li class="active"><a href="#home"><strong>Quiz</strong></a></li>
+      <li class=""><a href="#result"><strong>Scoreboard</strong></a></li>
+      <li class=""><a href="#admin"><strong>Admin</strong></a></li>
+    </ul>
+
+    <div class="tab-content" id="my-tab-content">
+      <div id="home" class="active">
+        <h3>Questions » <span class="label success inlinelabel"><strong><%= link_to 'New', new_course_quiz_question_path(@quiz.course, @quiz) %></strong></span></h3>
+        <table class="zebra-striped">
+          <tr>
+            <th>#</th>
+            <th>Question</th>
+            <th>1</th>
+            <th>2</th>
+            <th>3</th>
+            <th>4</th>
+            <th>Answer</th>
+          </tr>
+        <% counter = 1 %>
+        <% @quiz.questions.each do |question| %>
+          <tr>
+            <td><%= counter %> <span class="label warning inlinelabel"><%= link_to 'Edit', edit_course_quiz_question_path(@quiz.course, @quiz, question) %></span> <span class="label important inlinelabel"><%= link_to 'Destroy', course_quiz_question_path(@quiz.course, @quiz, question), :confirm => 'Are you sure?', :method => :delete %></span></td>
+            <td><%= link_to question.description, course_quiz_question_path(@quiz.course, @quiz, question) %></td>
+            <td><%= question.choice1 %></td>
+            <td><%= question.choice2 %></td>
+            <td><%= question.choice3 %></td>
+            <td><%= question.choice4 %></td>
+            <td><%= question.answer %></td>
+          </tr>
+          <% counter += 1 %>
+        <% end %>
+        </table>
+      </div>
+
+      <div id="result" class="">
+
+        <% if @quiz.questions.count > 0 %>
+        <table id="userTable" class="zebra-striped">
+          <thead>
+            <tr>
+            <th class="green header headerSortUp">Name</th>
+            <th class="blue header">Result</th>
+            <th class="orange header">About</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% User.all.each do |user| %>
+            <% if user.role == "student" %>
+            <tr>
+              <td><%= link_to user.name, user_path(user) %> </td>
+              <td>
+              <% 
+                total_correct = 0
+                for question in @quiz.questions
+                  submission = Submission.where(:user_id => user.id, :question_id => question.id)[0]
+                  if !submission.nil? && submission.answer == question.answer
+                      total_correct += 1
+                  end
+                end
+              %>
+              <strong><%= total_correct %> / <%= @quiz.questions.count %></strong> <% if @quiz.questions.count > 0 %>(~<%= total_correct * 100 / @quiz.questions.count %>%)<% end %>
+              </td>
+              <td><%= user.about %></td>
+            <% end %>
+            <% end %>
+          </tbody>
+        </table>
+        <% end %>
+
+      </div>
+
+      <div id="admin" class="">
+
+<%= form_for([@course, @quiz]) do |f| %>
+  <% if @quiz.errors.any? %>
+    <div class="alert-message block-message error">
+    <p><strong>Oh snap! You got an error!</strong></p>
+    <h3><%= pluralize(@quiz.errors.count, "error") %> found, please correct it:</h3>
+      <ul>
+      <% @quiz.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="clearfix">
+    <label><%= f.label :name %></label>
+    <div class="input"><%= f.text_field :name %></div>
+  </div>
+
+  <div class="clearfix">
+    <label><%= f.label :description %></label>
+    <div class="input"><%= f.text_field :description %></div>
+  </div>
+
+  <div class="clearfix">
+    <label>Submit Questions (Adds only new)</label>
+    <div class="input"><textarea class="xxlarge" cols="50" id="quiz_questions" name="questions" rows="10"></textarea></div>
+  </div>
+
+  <div class="actions">
+    <input id="quiz_submit" name="commit" type="submit" value="Submit" class="btn primary">
+    <%= link_to "Delete this Quiz", course_quiz_path(@course, @quiz), :class => "btn danger", :method => :delete, :confirm => "You sure?", :title => "Delete #{@quiz.name}" %>
+  </div>
+
+<% end %>
+
+      </div>
+
+    </div>
+
+
+
+
+  </div>
+</div>
+<% else %>
+<h3>Questions »</h3>
+  <% if signed_in? %>
+    <% if @quiz.questions.count > 0 %>
+    <% counter = 1 %>
+
+    <%= form_for([@course, @quiz]) do |f| %>
+
+    <% @quiz.questions.each do |question| %>
+      <p>Q<%= counter%>. <%= question.description %></p>
+        <ul class="inputs-list">
+          <% submission = Submission.where(:user_id => current_user.id, :question_id => question.id)[0] 
+            submitted_answer = 1
+            if !submission.nil?
+              submitted_answer = submission.answer
+            end
+          %>
+          <li><label><input id=<%= question.id %> name="q<%= question.id %>" type="radio" value="1" 
+          <% if submitted_answer == 1 %>
+           checked 
+          <% end %>/> <span><%= question.choice1 %></span></label></li>
+          <li><label><input id=<%= question.id %> name="q<%= question.id %>" type="radio" value="2" 
+          <% if submitted_answer == 2 %>
+           checked 
+          <% end %>/> <span><%= question.choice2 %></span></label></li>
+          <li><label><input id=<%= question.id %> name="q<%= question.id %>" type="radio" value="3" 
+          <% if submitted_answer == 3 %>
+           checked 
+          <% end %>/> <span><%= question.choice3 %></span></label></li>
+          <li><label><input id=<%= question.id %> name="q<%= question.id %>" type="radio" value="4"
+          <% if submitted_answer == 4 %>
+           checked
+          <% end %>/> <span><%= question.choice4 %></span></label></li>
+        </ul><br>
+      <% counter += 1 %>
+    <% end %>
+
+    <div class="actions">
+      <input id="user_submit" name="commit" type="submit" value="Submit" class="btn primary">
+    </div>
+    <% end %>
+
+    <% else %>
+    <p>No questions found, stay tuned!</p>
+    <% end %>
+  <% else %>
+    <h4>Sign-in Required</h4>
+    <p>In order to attempt this <code>quiz</code>, you're required to login:</p>
+    <div  align="left"><%= link_to "Sign in required!", signin_path, :class => "btn" %></div>
+  <% end %>
+<% end %>
+
+<br/>
+<%= link_to 'Back', course_path(@course) %>

@@ -1,0 +1,48 @@
+<%= form_for([@quiz.course, @quiz, @question]) do |f| %>
+  <% if @question.errors.any? %>
+    <div class="alert-message block-message error">
+    <p><strong>Oh snap! You got an error!</strong></p>
+    <h3><%= pluralize(@question.errors.count, "error") %> found, please correct it:</h3>
+      <ul>
+      <% @question.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="clearfix">
+    <label><%= f.label :description %></label>
+    <div class="input"><%= f.text_area :description, :class => "xlarge", :rows => "3" %></div>
+  </div>
+
+  <div class="clearfix">
+    <label>Option 1</label>
+    <div class="input"><%= f.text_field :choice1 %></div>
+  </div>
+
+  <div class="clearfix">
+    <label>Option 2</label>
+    <div class="input"><%= f.text_field :choice2 %></div>
+  </div>
+
+  <div class="clearfix">
+    <label>Option 3</label>
+    <div class="input"><%= f.text_field :choice3 %></div>
+  </div>
+
+  <div class="clearfix">
+    <label>Option 4</label>
+    <div class="input"><%= f.text_field :choice4 %></div>
+  </div>
+
+  <div class="clearfix">
+    <label><%= f.label :answer %></label>
+    <div class="input"><%= f.text_field :answer %></div>
+  </div>
+
+  <div class="actions">
+    <input id="question_submit" name="commit" type="submit" value="Submit" class="btn primary">
+  </div>
+
+<% end %>

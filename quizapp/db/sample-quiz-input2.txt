@@ -1,0 +1,139 @@
+For a sqrt(p)xsqrt(p) Mesh ,the lower bound on the worst-case routing time is
+p-1
+sqrt(p)/2-1
+p^2-1
+2(sqrt(p)-1)  
+4
+
+Time taken in odd-even merge sort  on a p-processor linear array
+O(p)
+O(log(p))
+O(p^2)
+O(sqrt(p)))
+1
+
+The bijection width of a 4x4 Mesh is
+16
+4
+8
+2
+2
+
+What is the diameter of any interconnection network
+The maximum distance between any two processor in a row of network
+The maximum distance between any two processor in a column of network
+The maximum distance between any two processor in the network
+1
+3
+
+For k-k routing problem ,the lower bound on the time taken by any routing algorithm on sqrt(p)xsqrt(p) Mesh is
+k*p/2
+k*sqrt(p)/2
+k^2*sqrt(p)/2
+2*k*p
+2
+
+If n=p^c for some constant c>1 , selection from n keys can be performed on a sqrt(p)xsqrt(p) Mesh in
+O(p)
+O(log(p))
+O(( (n/p)*loglogp + sqrt(p)*logn)
+O(sqrt(p))
+3
+
+Broadcasting of a message on a  sqrt(p)xsqrt(p) Mesh can be performed in 
+<=log(p)-1
+<=p^2-1
+<=2(sqrt(p)-1)
+<=sqrt(p)/2-1
+3
+
+If number of keys to be sorted is less then sqrt(p) then Sparsh enumuration sort can be completed in 
+O(1)
+O(log(p))
+O(p)
+O(sqrt(p))
+4
+
+Prifix computation on a sqrt(p)xsqrt(p) Mesh in a row major order can be performed in
+3*sqrt(p)+2 steps
+p+1 steps
+log(p)+1 steps
+2(sqrt(p)-1) steps
+1
+
+The Shearsort algorithm's running time on sqrt(p)xsqrt(p) Mesh is
+O(p)
+O(log(p))
+O(p^2)
+O(sqrt(p)*log(p))
+4
+
+Merge time to two sorted snakes of size sqrt(p)*sqrt(p)/2 is
+O(p)
+O(log(p))
+O(( n/p + sqrt(p)*loglogp)
+O(sqrt(p))
+4
+
+Maximum step taken to data concentration on a p-processor linear array
+2p
+p-1
+log(p)
+p^2
+1
+
+Indexing schemes of Mesh structure is/are
+column major
+snakelike row major
+blockwise snakelike row major
+all of the above
+4
+
+For the k-k routing problem , if k=4, bijection width b=2 then minimum time taken by any algorithm on n-processor will be 
+n/2
+2*n
+n
+1
+3
+
+prefix computation on a 16 processors linear array can be performed in 
+4 steps
+16 steps
+1 step
+8 steps
+2
+
+Steps taken by Data concentration on a sqrt(p)xsqrt(p) Mesh 
+6*sqrt(p)+O(p^.25*log p)
+sqrt(p)+O(log(p))
+3*sqrt(p)+O(( n/p + sqrt(p)*loglogp)
+sqrt(p)+O(sqrt(p))
+1
+
+Broadcasting on a p-processor linear array can be completed in
+log(p) steps or less
+sqrt(p) steps or less
+p steps or less
+1 step
+3
+
+Prifix computation on a 4x4 Mesh in a row major order can be performed in
+14 steps
+17 steps
+5 steps
+6 steps
+1
+
+Maximum steps taken to data concentration on a 16-processor linear array
+32
+15
+4
+1
+1
+
+For a 10x10 Mesh ,the minimum time taken to route the packet from (1,1) to (10,10)
+99
+4
+50
+18
+4

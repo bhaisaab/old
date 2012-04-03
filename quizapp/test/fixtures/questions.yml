@@ -1,0 +1,19 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  description: MyString
+  choice1: MyString
+  choice2: MyString
+  choice3: MyString
+  choice4: MyString
+  answer: 1
+  quiz_id: 1
+
+two:
+  description: MyString
+  choice1: MyString
+  choice2: MyString
+  choice3: MyString
+  choice4: MyString
+  answer: 1
+  quiz_id: 1

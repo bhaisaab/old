@@ -1,0 +1,29 @@
+<div class="page-header">
+  <h1>Welcome! <small>Department of Computer Engineering, IIT-BHU</small></h1>
+</div>
+<div class="row">
+  <div class="span10">
+    <h2><%= link_to 'Courses', courses_path %> <span class="label success">New</span></h2>
+    <% Course.all.each do |course| %>
+    <h4 class="linklabel"> <%= link_to course.name, course %> <code><%= link_to course.user.name, course.user %></code></h4>
+    <% if course.quizzes.count %>
+    <ul>
+    <% course.quizzes.each do |quiz| %>
+      <li><%= link_to quiz.name, course_quiz_path(course, quiz) %> <code><%= quiz.questions.count %></code></li>
+    <% end %>
+    </ul>
+    <% end %>
+    <% end %>
+  </div>
+  <div class="span4">
+    <h2>QuizApp <span class="label">Get started</span></h2>
+    <p>Welcome to <code>QuizApp</code>. This is an online portal for students to try out pop quizes created by faculty of of Department of Computer Engineering, IIT-BHU covering various courses and chapters.</p>
+    <% if not signed_in? %>
+    <p>Click below to Sign up if you're new or click Log in and get started already!</p>
+    <div  align="center">
+      <%= link_to "Sign in!", signin_path, :class => "btn large primary" %>
+      <%= link_to "Sign up now!", signup_path, :class => "btn large" %>
+    </div>
+    <% end %>
+  </div>
+</div>

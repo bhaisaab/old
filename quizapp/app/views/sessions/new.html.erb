@@ -1,0 +1,21 @@
+<div class="page-header">
+  <h1>Sign in <small>Log in to your account and start quizzing!</small></h1>
+</div>
+<div class="row">
+  <div class="span16">
+  <%= form_for(:session, :url => sessions_path) do |f| %>
+    <div class="clearfix">
+      <label><%= f.label :email %></label>
+      <div class="input"><%= f.text_field :email %></div>
+    </div>
+    <div class="clearfix">
+      <label><%= f.label :password %></label>
+      <div class="input"><%= f.password_field :password %></div>
+    </div>
+    <div class="actions">
+      <%= f.submit "Sign in", :class => "btn primary" %>
+    </div>
+  <% end %>
+  <p>New user? <%= link_to "Sign up now!", signup_path %></p>
+  </div>
+</div>

@@ -1,0 +1,29 @@
+#notice {
+  color: green;
+}
+
+.field_with_errors {
+  padding: 2px;
+  background-color: #FB7776;
+  display: table;
+}
+
+.linklabel a {
+  color: #333;
+  text-decoration: none;
+}
+
+.linklabel a:hover, .linklabel .active a {
+  color: #00438a;
+  text-decoration: none;
+}
+
+.inlinelabel a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.inlinelabel a:hover, .inlinelabel .active a {
+  color: #333;
+  text-decoration: none;
+}
