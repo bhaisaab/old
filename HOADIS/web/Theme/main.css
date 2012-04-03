@@ -1,0 +1,82 @@
+/* 
+    Document   : main
+    Created on : 31 Jan, 2009, 1:05:29 PM
+    Author     : ajay
+    Description: To specify the main style of the application and seperate it from the content.
+                 The aim is to make any template usuable if it provides a few required constucts.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+root 
+{ 
+ display: block;
+}
+
+div.error
+{
+    color: red;
+}
+
+div.top
+{
+  	width:160px;
+	float:right;
+	font-size:95%;
+	color:#6C534A;
+	text-align:left;
+}
+
+div.content
+{
+
+ color: black;
+
+ top: 80px; /* 80 pixels from the top */
+
+ margin-left: 20%; /* 20% from the left side of the screen */
+
+ background-color: white;
+
+ text-align: left;
+
+}
+
+#right
+{
+ float: right;
+
+}
+
+div.left
+{
+ background: white;
+ width :20%;
+ float:left;
+ height:100%;
+ margin-top: 0%;
+ margin-bottom: 0%;
+ margin-left: 0%;
+ margin-right: 0%;
+ padding-top: 0%;
+ padding-bottom: 0%;
+ padding-left: 0%;
+ padding-right: 0%;
+}
+
+div.container
+{
+ 
+}
+
+div.left li
+{
+ list-style-type: none;
+ display:block;
+}
+
+
+
