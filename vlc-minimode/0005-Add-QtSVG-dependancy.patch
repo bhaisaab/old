@@ -1,0 +1,25 @@
+From 9a1393728fc3fef81496046b441fc46d8b4d7432 Mon Sep 17 00:00:00 2001
+From: Rohit Yadav <rohityadav89@gmail.com>
+Date: Tue, 23 Jun 2009 19:38:41 +0200
+Subject: [PATCH] Add QtSVG dependancy
+
+---
+ configure.ac |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index 7d25e70..6946456 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -4949,7 +4949,7 @@ AC_ARG_ENABLE(qt4,
+   AS_IF([test "${SYS}" = "darwin"], [enable_qt4=no])
+ ])
+ AS_IF([test "${enable_qt4}" != "no"], [
+-  PKG_CHECK_MODULES(QT4, [QtCore QtGui >= 4.4.0], [
++  PKG_CHECK_MODULES(QT4, [QtCore QtGui QtSvg >= 4.4.0], [
+     VLC_ADD_PLUGIN([qt4])
+     AC_DEFINE([HAVE_QT4], 1, [Define to 1 if you have QT4 library.])
+     ALIASES="${ALIASES} qvlc"
+-- 
+1.6.0.4
+

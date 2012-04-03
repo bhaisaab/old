@@ -1,0 +1,1046 @@
+From 176e81bbb202b883506447d3c1888fa6df5e0af4 Mon Sep 17 00:00:00 2001
+From: Rohit Yadav <rohityadav89@gmail.com>
+Date: Tue, 23 Jun 2009 19:24:39 +0200
+Subject: [PATCH] MiniModeSvgs
+
+---
+ modules/gui/qt4/svgs/minimode/albumart.svg   |  103 +++++++++++++++++++
+ modules/gui/qt4/svgs/minimode/background.svg |   88 ++++++++++++++++
+ modules/gui/qt4/svgs/minimode/knob.svg       |  111 ++++++++++++++++++++
+ modules/gui/qt4/svgs/minimode/lock.svg       |  142 ++++++++++++++++++++++++++
+ modules/gui/qt4/svgs/minimode/next.svg       |   92 +++++++++++++++++
+ modules/gui/qt4/svgs/minimode/pause.svg      |  101 ++++++++++++++++++
+ modules/gui/qt4/svgs/minimode/play.svg       |  104 +++++++++++++++++++
+ modules/gui/qt4/svgs/minimode/previous.svg   |   81 +++++++++++++++
+ modules/gui/qt4/svgs/minimode/unlock.svg     |  141 +++++++++++++++++++++++++
+ 9 files changed, 963 insertions(+), 0 deletions(-)
+ create mode 100644 modules/gui/qt4/svgs/minimode/albumart.svg
+ create mode 100644 modules/gui/qt4/svgs/minimode/background.svg
+ create mode 100644 modules/gui/qt4/svgs/minimode/knob.svg
+ create mode 100644 modules/gui/qt4/svgs/minimode/lock.svg
+ create mode 100644 modules/gui/qt4/svgs/minimode/next.svg
+ create mode 100644 modules/gui/qt4/svgs/minimode/pause.svg
+ create mode 100644 modules/gui/qt4/svgs/minimode/play.svg
+ create mode 100644 modules/gui/qt4/svgs/minimode/previous.svg
+ create mode 100644 modules/gui/qt4/svgs/minimode/unlock.svg
+
+diff --git a/modules/gui/qt4/svgs/minimode/albumart.svg b/modules/gui/qt4/svgs/minimode/albumart.svg
+new file mode 100644
+index 0000000..0cd5ebc
+--- /dev/null
++++ b/modules/gui/qt4/svgs/minimode/albumart.svg
+@@ -0,0 +1,103 @@
++<?xml version="1.0" encoding="UTF-8" standalone="no"?>
++<!-- Created with Inkscape (http://www.inkscape.org/) -->
++<!-- Credits: Rohit Yadav (rohityadav89 AT gmail.com) -->
++<svg
++   xmlns:dc="http://purl.org/dc/elements/1.1/"
++   xmlns:cc="http://creativecommons.org/ns#"
++   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
++   xmlns:svg="http://www.w3.org/2000/svg"
++   xmlns="http://www.w3.org/2000/svg"
++   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
++   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
++   width="41.715549"
++   height="48.000004"
++   id="svg2"
++   sodipodi:version="0.32"
++   inkscape:version="0.46"
++   version="1.0"
++   sodipodi:docname="albumart.svg"
++   inkscape:output_extension="org.inkscape.output.svg.inkscape">
++  <defs
++     id="defs4">
++    <inkscape:perspective
++       sodipodi:type="inkscape:persp3d"
++       inkscape:vp_x="0 : 526.18109 : 1"
++       inkscape:vp_y="0 : 1000 : 0"
++       inkscape:vp_z="744.09448 : 526.18109 : 1"
++       inkscape:persp3d-origin="372.04724 : 350.78739 : 1"
++       id="perspective10" />
++    <inkscape:perspective
++       id="perspective2390"
++       inkscape:persp3d-origin="372.04724 : 350.78739 : 1"
++       inkscape:vp_z="744.09448 : 526.18109 : 1"
++       inkscape:vp_y="0 : 1000 : 0"
++       inkscape:vp_x="0 : 526.18109 : 1"
++       sodipodi:type="inkscape:persp3d" />
++  </defs>
++  <sodipodi:namedview
++     id="base"
++     pagecolor="#000000"
++     bordercolor="#666666"
++     borderopacity="1.0"
++     gridtolerance="10000"
++     guidetolerance="10"
++     objecttolerance="10"
++     inkscape:pageopacity="0"
++     inkscape:pageshadow="2"
++     inkscape:zoom="3.9597979"
++     inkscape:cx="54.704128"
++     inkscape:cy="22.983382"
++     inkscape:document-units="px"
++     inkscape:current-layer="layer1"
++     showgrid="false"
++     showguides="true"
++     inkscape:guide-bbox="true"
++     inkscape:window-width="1278"
++     inkscape:window-height="717"
++     inkscape:window-x="-4"
++     inkscape:window-y="51" />
++  <metadata
++     id="metadata7">
++    <rdf:RDF>
++      <cc:Work
++         rdf:about="">
++        <dc:format>image/svg+xml</dc:format>
++        <dc:type
++           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
++        <dc:creator>
++          <cc:Agent>
++            <dc:title>Rohit Yadav</dc:title>
++          </cc:Agent>
++        </dc:creator>
++        <cc:license
++           rdf:resource="http://creativecommons.org/licenses/by-sa/3.0/" />
++        <dc:title>VLC Mono Chrome</dc:title>
++      </cc:Work>
++      <cc:License
++         rdf:about="http://creativecommons.org/licenses/by-sa/3.0/">
++        <cc:permits
++           rdf:resource="http://creativecommons.org/ns#Reproduction" />
++        <cc:permits
++           rdf:resource="http://creativecommons.org/ns#Distribution" />
++        <cc:requires
++           rdf:resource="http://creativecommons.org/ns#Notice" />
++        <cc:requires
++           rdf:resource="http://creativecommons.org/ns#Attribution" />
++        <cc:permits
++           rdf:resource="http://creativecommons.org/ns#DerivativeWorks" />
++        <cc:requires
++           rdf:resource="http://creativecommons.org/ns#ShareAlike" />
++      </cc:License>
++    </rdf:RDF>
++  </metadata>
++  <g
++     inkscape:label="Layer 1"
++     inkscape:groupmode="layer"
++     id="layer1"
++     transform="translate(-40.421001,-344.36215)">
++    <path
++       id="path2402"
++       d="M 41.442873,389.47779 C 41.255145,389.00401 43.772889,380.32536 45.431231,375.72994 L 45.953689,374.28217 L 47.971664,374.28217 C 49.84162,374.28217 49.998824,374.34854 50.114852,375.18702 C 50.317522,376.65163 52.000474,378.0404 54.459997,378.77263 C 62.509776,381.16915 72.601075,378.88259 72.601075,374.66208 C 72.601075,374.22505 73.044966,374.1012 74.611317,374.1012 C 76.989065,374.1012 76.583543,373.41115 79.340139,382.14792 C 80.391069,385.47872 81.196776,388.57335 81.130602,389.02486 L 81.010286,389.84578 L 61.336604,389.93945 C 43.93947,390.02228 41.637458,389.96886 41.442873,389.47779 z M 56.530138,369.98846 C 53.546255,369.29057 52.418968,368.76937 52.418968,368.0877 C 52.418968,367.52326 54.602882,360.34091 54.770909,360.35275 C 54.813471,360.35575 55.521033,360.59291 56.343267,360.87977 C 58.390058,361.59388 63.890437,361.58509 66.082953,360.8642 C 67.034641,360.5513 67.88202,360.36184 67.966015,360.44319 C 68.364246,360.82884 70.388387,368.07484 70.218005,368.50482 C 69.651004,369.93577 60.531252,370.92426 56.530138,369.98846 z M 58.305416,351.79043 C 57.945689,351.68984 57.651367,351.44097 57.651367,351.23735 C 57.651367,350.32062 58.880536,346.90251 59.386351,346.41266 C 60.165945,345.65768 62.623916,345.71361 63.352947,346.50291 C 64.054368,347.26232 65.300519,351.25052 64.944201,351.5956 C 64.640878,351.88934 59.227364,352.04821 58.305416,351.79043 z"
++       style="fill:#ffffff" />
++  </g>
++</svg>
+diff --git a/modules/gui/qt4/svgs/minimode/background.svg b/modules/gui/qt4/svgs/minimode/background.svg
+new file mode 100644
+index 0000000..e1e2dc4
+--- /dev/null
++++ b/modules/gui/qt4/svgs/minimode/background.svg
+@@ -0,0 +1,88 @@
++<?xml version="1.0" encoding="UTF-8" standalone="no"?>
++<!-- Created with Inkscape (http://www.inkscape.org/) -->
++<!-- Credits: Rohit Yadav (rohityadav89 AT gmail.com) -->
++<svg
++   xmlns:dc="http://purl.org/dc/elements/1.1/"
++   xmlns:cc="http://creativecommons.org/ns#"
++   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
++   xmlns:svg="http://www.w3.org/2000/svg"
++   xmlns="http://www.w3.org/2000/svg"
++   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
++   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
++   width="320"
++   height="90"
++   id="svg2"
++   sodipodi:version="0.32"
++   inkscape:version="0.46"
++   version="1.0"
++   sodipodi:docname="background.svg"
++   inkscape:output_extension="org.inkscape.output.svg.inkscape">
++  <defs
++     id="defs4">
++    <linearGradient
++       id="linearGradient3223">
++      <stop
++         style="stop-color:#000000;stop-opacity:0.94117647;"
++         offset="0"
++         id="stop3225" />
++      <stop
++         style="stop-color:#000000;stop-opacity:0.70491803;"
++         offset="1"
++         id="stop3227" />
++    </linearGradient>
++    <inkscape:perspective
++       sodipodi:type="inkscape:persp3d"
++       inkscape:vp_x="0 : 526.18109 : 1"
++       inkscape:vp_y="0 : 1000 : 0"
++       inkscape:vp_z="744.09448 : 526.18109 : 1"
++       inkscape:persp3d-origin="372.04724 : 350.78739 : 1"
++       id="perspective10" />
++  </defs>
++  <sodipodi:namedview
++     id="base"
++     pagecolor="#ffffff"
++     bordercolor="#666666"
++     borderopacity="1.0"
++     gridtolerance="10000"
++     guidetolerance="10"
++     objecttolerance="10"
++     inkscape:pageopacity="0"
++     inkscape:pageshadow="2"
++     inkscape:zoom="1.979899"
++     inkscape:cx="-91.003302"
++     inkscape:cy="97.129685"
++     inkscape:document-units="px"
++     inkscape:current-layer="layer1"
++     showgrid="false"
++     inkscape:window-width="1280"
++     inkscape:window-height="717"
++     inkscape:window-x="0"
++     inkscape:window-y="9"
++     showguides="true" />
++  <metadata
++     id="metadata7">
++    <rdf:RDF>
++      <cc:Work
++         rdf:about="">
++        <dc:format>image/svg+xml</dc:format>
++        <dc:type
++           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
++      </cc:Work>
++    </rdf:RDF>
++  </metadata>
++  <g
++     inkscape:label="Rounded Rectangle"
++     inkscape:groupmode="layer"
++     id="layer1"
++     transform="translate(-47.710714,-533.75373)">
++    <rect
++       style="opacity:1;fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
++       id="rect2383"
++       width="318.99255"
++       height="88.992561"
++       x="48.214432"
++       y="534.25745"
++       ry="9.1176443"
++       rx="8.0228548" />
++  </g>
++</svg>
+diff --git a/modules/gui/qt4/svgs/minimode/knob.svg b/modules/gui/qt4/svgs/minimode/knob.svg
+new file mode 100644
+index 0000000..109f813
+--- /dev/null
++++ b/modules/gui/qt4/svgs/minimode/knob.svg
+@@ -0,0 +1,111 @@
++<?xml version="1.0" encoding="UTF-8" standalone="no"?>
++<!-- Created with Inkscape (http://www.inkscape.org/) -->
++<!-- Credits: Rohit Yadav (rohityadav89 AT gmail.com) -->
++<svg
++   xmlns:dc="http://purl.org/dc/elements/1.1/"
++   xmlns:cc="http://creativecommons.org/ns#"
++   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
++   xmlns:svg="http://www.w3.org/2000/svg"
++   xmlns="http://www.w3.org/2000/svg"
++   xmlns:xlink="http://www.w3.org/1999/xlink"
++   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
++   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
++   width="64"
++   height="64"
++   id="svg2430"
++   sodipodi:version="0.32"
++   inkscape:version="0.46"
++   version="1.0"
++   sodipodi:docname="knob.svg"
++   inkscape:output_extension="org.inkscape.output.svg.inkscape">
++  <defs
++     id="defs2432">
++    <linearGradient
++       id="linearGradient5773">
++      <stop
++         style="stop-color:black;stop-opacity:1;"
++         offset="0"
++         id="stop5775" />
++      <stop
++         style="stop-color:#6e6e6e;stop-opacity:1;"
++         offset="1"
++         id="stop5777" />
++    </linearGradient>
++    <linearGradient
++       inkscape:collect="always"
++       xlink:href="#linearGradient5773"
++       id="linearGradient5794"
++       x1="96.0625"
++       y1="358.5"
++       x2="28.21875"
++       y2="301.71875"
++       gradientUnits="userSpaceOnUse"
++       gradientTransform="translate(-30.867898,-296.83664)" />
++    <inkscape:perspective
++       sodipodi:type="inkscape:persp3d"
++       inkscape:vp_x="0 : 32 : 1"
++       inkscape:vp_y="6.1230318e-14 : 1000 : 0"
++       inkscape:vp_z="64 : 32 : 1"
++       inkscape:persp3d-origin="32 : 21.333333 : 1"
++       id="perspective2438" />
++    <inkscape:perspective
++       sodipodi:type="inkscape:persp3d"
++       inkscape:vp_x="0 : 526.18109 : 1"
++       inkscape:vp_y="0 : 1000 : 0"
++       inkscape:vp_z="744.09448 : 526.18109 : 1"
++       inkscape:persp3d-origin="372.04724 : 350.78739 : 1"
++       id="perspective2390" />
++    <inkscape:perspective
++       id="perspective10"
++       inkscape:persp3d-origin="372.04724 : 350.78739 : 1"
++       inkscape:vp_z="744.09448 : 526.18109 : 1"
++       inkscape:vp_y="0 : 1000 : 0"
++       inkscape:vp_x="0 : 526.18109 : 1"
++       sodipodi:type="inkscape:persp3d" />
++  </defs>
++  <sodipodi:namedview
++     id="base"
++     pagecolor="#ff0000"
++     bordercolor="#666666"
++     borderopacity="1.0"
++     inkscape:pageopacity="0"
++     inkscape:pageshadow="2"
++     inkscape:zoom="5.5"
++     inkscape:cx="54.181135"
++     inkscape:cy="21.454545"
++     inkscape:current-layer="layer1"
++     showgrid="true"
++     inkscape:document-units="px"
++     inkscape:grid-bbox="true"
++     inkscape:window-width="885"
++     inkscape:window-height="717"
++     inkscape:window-x="244"
++     inkscape:window-y="26" />
++  <metadata
++     id="metadata2435">
++    <rdf:RDF>
++      <cc:Work
++         rdf:about="">
++        <dc:format>image/svg+xml</dc:format>
++        <dc:type
++           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
++      </cc:Work>
++    </rdf:RDF>
++  </metadata>
++  <g
++     id="layer1"
++     inkscape:label="Layer 1"
++     inkscape:groupmode="layer"
++     transform="translate(4.6491477,-2.8821023)">
++    <path
++       sodipodi:type="arc"
++       style="fill:#0a0a0a;fill-opacity:0.94117647;stroke:#ffffff;stroke-width:18.48474503;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.94117647"
++       id="path2392"
++       sodipodi:cx="30.636364"
++       sodipodi:cy="31.363636"
++       sodipodi:rx="26.636364"
++       sodipodi:ry="26.818182"
++       d="M 57.272728,31.363636 A 26.636364,26.818182 0 1 1 4,31.363636 A 26.636364,26.818182 0 1 1 57.272728,31.363636 z"
++       transform="matrix(0.8368819,0,0,0.8312081,1.7118347,8.8123939)" />
++  </g>
++</svg>
+diff --git a/modules/gui/qt4/svgs/minimode/lock.svg b/modules/gui/qt4/svgs/minimode/lock.svg
+new file mode 100644
+index 0000000..64f51f0
+--- /dev/null
++++ b/modules/gui/qt4/svgs/minimode/lock.svg
+@@ -0,0 +1,142 @@
++<?xml version="1.0" encoding="UTF-8" standalone="no"?>
++<!-- Created with Inkscape (http://www.inkscape.org/) by Rohit Yadav(rohityadav89@gmail.com) -->
++<svg
++   xmlns:dc="http://purl.org/dc/elements/1.1/"
++   xmlns:cc="http://creativecommons.org/ns#"
++   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
++   xmlns:svg="http://www.w3.org/2000/svg"
++   xmlns="http://www.w3.org/2000/svg"
++   xmlns:xlink="http://www.w3.org/1999/xlink"
++   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
++   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
++   width="64"
++   height="64"
++   id="svg2430"
++   sodipodi:version="0.32"
++   inkscape:version="0.46"
++   version="1.0"
++   sodipodi:docname="lock.svg"
++   inkscape:output_extension="org.inkscape.output.svg.inkscape">
++  <defs
++     id="defs2432">
++    <linearGradient
++       id="linearGradient5773">
++      <stop
++         style="stop-color:black;stop-opacity:1;"
++         offset="0"
++         id="stop5775" />
++      <stop
++         style="stop-color:#6e6e6e;stop-opacity:1;"
++         offset="1"
++         id="stop5777" />
++    </linearGradient>
++    <linearGradient
++       inkscape:collect="always"
++       xlink:href="#linearGradient5773"
++       id="linearGradient5794"
++       x1="96.0625"
++       y1="358.5"
++       x2="28.21875"
++       y2="301.71875"
++       gradientUnits="userSpaceOnUse"
++       gradientTransform="translate(-30.867898,-296.83664)" />
++    <inkscape:perspective
++       sodipodi:type="inkscape:persp3d"
++       inkscape:vp_x="0 : 32 : 1"
++       inkscape:vp_y="6.1230318e-14 : 1000 : 0"
++       inkscape:vp_z="64 : 32 : 1"
++       inkscape:persp3d-origin="32 : 21.333333 : 1"
++       id="perspective2438" />
++    <inkscape:perspective
++       sodipodi:type="inkscape:persp3d"
++       inkscape:vp_x="0 : 526.18109 : 1"
++       inkscape:vp_y="0 : 1000 : 0"
++       inkscape:vp_z="744.09448 : 526.18109 : 1"
++       inkscape:persp3d-origin="372.04724 : 350.78739 : 1"
++       id="perspective2390" />
++    <inkscape:perspective
++       id="perspective10"
++       inkscape:persp3d-origin="372.04724 : 350.78739 : 1"
++       inkscape:vp_z="744.09448 : 526.18109 : 1"
++       inkscape:vp_y="0 : 1000 : 0"
++       inkscape:vp_x="0 : 526.18109 : 1"
++       sodipodi:type="inkscape:persp3d" />
++  </defs>
++  <sodipodi:namedview
++     id="base"
++     pagecolor="#ff46ff"
++     bordercolor="#666666"
++     borderopacity="1.0"
++     inkscape:pageopacity="0"
++     inkscape:pageshadow="2"
++     inkscape:zoom="5.5"
++     inkscape:cx="37.307456"
++     inkscape:cy="30.571574"
++     inkscape:current-layer="layer1"
++     showgrid="true"
++     inkscape:document-units="px"
++     inkscape:grid-bbox="true"
++     inkscape:window-width="885"
++     inkscape:window-height="717"
++     inkscape:window-x="334"
++     inkscape:window-y="26" />
++  <metadata
++     id="metadata2435">
++    <rdf:RDF>
++      <cc:Work
++         rdf:about="">
++        <dc:format>image/svg+xml</dc:format>
++        <dc:type
++           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
++      </cc:Work>
++    </rdf:RDF>
++  </metadata>
++  <g
++     id="layer1"
++     inkscape:label="Layer 1"
++     inkscape:groupmode="layer"
++     transform="translate(4.6491477,-2.8821023)">
++    <rect
++       style="fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:5.24329472;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
++       id="rect3214"
++       width="44.137821"
++       height="9.1326895"
++       x="5.010632"
++       y="14.08172" />
++    <rect
++       style="fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:3.94979692;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
++       id="rect3220"
++       width="19.719589"
++       height="11.59986"
++       x="14.550976"
++       y="-49.832195"
++       transform="matrix(0,1,-1,0,0,0)" />
++    <rect
++       style="fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:3.90682602;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
++       id="rect3222"
++       width="19.218927"
++       height="11.644477"
++       x="14.620056"
++       y="-15.948742"
++       transform="matrix(0,1,-1,0,0,0)" />
++    <rect
++       style="fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:2.10756660000000018;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
++       id="rect3226"
++       width="57.892433"
++       height="33.974003"
++       x="-1.5953645"
++       y="31.754316"
++       rx="9.0624809"
++       ry="6.7758546" />
++    <g
++       transform="translate(-36.264519,-272.19663)"
++       id="g3301"
++       inkscape:label="Layer 1"
++       style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-opacity:1">
++      <path
++         style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-opacity:1"
++         d="M 56.618871,328.71256 C 56.552673,328.55139 57.44051,325.59906 58.025293,324.03578 L 58.20953,323.54328 L 58.921132,323.54328 C 59.580538,323.54328 59.635973,323.56586 59.676888,323.85109 C 59.748355,324.34932 60.341818,324.82176 61.209125,325.07085 C 64.047734,325.8861 67.606248,325.10826 67.606248,323.67251 C 67.606248,323.52384 67.762777,323.48172 68.315124,323.48172 C 69.153593,323.48172 69.010592,323.24697 69.982656,326.21906 C 70.353248,327.35214 70.637366,328.40488 70.614031,328.55848 L 70.571603,328.83774 L 63.634036,328.86961 C 57.499251,328.89779 56.687489,328.87961 56.618871,328.71256 z M 61.939123,322.08263 C 60.88691,321.84522 60.489392,321.66791 60.489392,321.43602 C 60.489392,321.24401 61.259511,318.8007 61.318762,318.80473 C 61.333772,318.80576 61.58328,318.88643 61.873226,318.98402 C 62.59499,319.22694 64.534598,319.22395 65.30775,318.97871 C 65.643346,318.87227 65.942158,318.80783 65.971778,318.83549 C 66.112207,318.96669 66.825983,321.43166 66.7659,321.57793 C 66.565959,322.06471 63.350043,322.40097 61.939123,322.08263 z M 62.565142,315.89198 C 62.438291,315.85776 62.334504,315.7731 62.334504,315.70383 C 62.334504,315.39198 62.767948,314.2292 62.946314,314.06256 C 63.221224,313.80573 64.087983,313.82475 64.345062,314.09326 C 64.592406,314.3516 65.031839,315.70831 64.906189,315.8257 C 64.799229,315.92563 62.89025,315.97967 62.565142,315.89198 z"
++         id="path2402" />
++    </g>
++  </g>
++</svg>
+diff --git a/modules/gui/qt4/svgs/minimode/next.svg b/modules/gui/qt4/svgs/minimode/next.svg
+new file mode 100644
+index 0000000..894ef2c
+--- /dev/null
++++ b/modules/gui/qt4/svgs/minimode/next.svg
+@@ -0,0 +1,92 @@
++<?xml version="1.0" encoding="UTF-8" standalone="no"?>
++<!-- Created with Inkscape (http://www.inkscape.org/) by Rohit Yadav(rohityadav89@gmail.com) -->
++<svg
++   xmlns:dc="http://purl.org/dc/elements/1.1/"
++   xmlns:cc="http://creativecommons.org/ns#"
++   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
++   xmlns:svg="http://www.w3.org/2000/svg"
++   xmlns="http://www.w3.org/2000/svg"
++   xmlns:xlink="http://www.w3.org/1999/xlink"
++   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
++   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
++   width="71.84375"
++   height="60.78125"
++   id="svg2430"
++   sodipodi:version="0.32"
++   inkscape:version="0.46"
++   version="1.0"
++   sodipodi:docname="next.svg"
++   inkscape:output_extension="org.inkscape.output.svg.inkscape">
++  <defs
++     id="defs2432">
++    <linearGradient
++       id="linearGradient5773">
++      <stop
++         style="stop-color:black;stop-opacity:1;"
++         offset="0"
++         id="stop5775" />
++      <stop
++         style="stop-color:#6e6e6e;stop-opacity:1;"
++         offset="1"
++         id="stop5777" />
++    </linearGradient>
++    <linearGradient
++       inkscape:collect="always"
++       xlink:href="#linearGradient5773"
++       id="linearGradient5794"
++       x1="96.0625"
++       y1="358.5"
++       x2="28.21875"
++       y2="301.71875"
++       gradientUnits="userSpaceOnUse"
++       gradientTransform="translate(-30.867898,-296.83664)" />
++    <inkscape:perspective
++       sodipodi:type="inkscape:persp3d"
++       inkscape:vp_x="0 : 32 : 1"
++       inkscape:vp_y="0 : 1000 : 0"
++       inkscape:vp_z="64 : 32 : 1"
++       inkscape:persp3d-origin="32 : 21.333333 : 1"
++       id="perspective2438" />
++  </defs>
++  <sodipodi:namedview
++     id="base"
++     pagecolor="#000000"
++     bordercolor="#666666"
++     borderopacity="1.0"
++     inkscape:pageopacity="0"
++     inkscape:pageshadow="2"
++     inkscape:zoom="5.5"
++     inkscape:cx="34.752154"
++     inkscape:cy="32"
++     inkscape:current-layer="layer1"
++     showgrid="true"
++     inkscape:document-units="px"
++     inkscape:grid-bbox="true"
++     inkscape:window-width="684"
++     inkscape:window-height="717"
++     inkscape:window-x="210"
++     inkscape:window-y="26" />
++  <metadata
++     id="metadata2435">
++    <rdf:RDF>
++      <cc:Work
++         rdf:about="">
++        <dc:format>image/svg+xml</dc:format>
++        <dc:type
++           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
++      </cc:Work>
++    </rdf:RDF>
++  </metadata>
++  <g
++     id="layer1"
++     inkscape:label="Layer 1"
++     inkscape:groupmode="layer"
++     transform="translate(4.6491477,-2.8821023)">
++    <path
++       style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#ffffff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:2.3499999;stroke-dasharray:none;stroke-opacity:1"
++       d="M 24.735796,6.0909091 L 64.454546,33.465909 L 24.735796,60.872159 L 24.735796,42.840909 L -1.3892042,60.872159 L -1.3892042,6.0909091 L 24.735796,24.122159 L 24.735796,6.0909091 z"
++       id="path6719"
++       inkscape:export-xdpi="300"
++       inkscape:export-ydpi="300" />
++  </g>
++</svg>
+diff --git a/modules/gui/qt4/svgs/minimode/pause.svg b/modules/gui/qt4/svgs/minimode/pause.svg
+new file mode 100644
+index 0000000..5c0ac63
+--- /dev/null
++++ b/modules/gui/qt4/svgs/minimode/pause.svg
+@@ -0,0 +1,101 @@
++<?xml version="1.0" encoding="UTF-8" standalone="no"?>
++<!-- Created with Inkscape (http://www.inkscape.org/) by Rohit Yadav(rohityadav89@gmail.com) -->
++<svg
++   xmlns:dc="http://purl.org/dc/elements/1.1/"
++   xmlns:cc="http://creativecommons.org/ns#"
++   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
++   xmlns:svg="http://www.w3.org/2000/svg"
++   xmlns="http://www.w3.org/2000/svg"
++   xmlns:xlink="http://www.w3.org/1999/xlink"
++   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
++   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
++   width="68.662003"
++   height="61.829334"
++   id="svg2430"
++   sodipodi:version="0.32"
++   inkscape:version="0.46"
++   version="1.0"
++   sodipodi:docname="pause.svg"
++   inkscape:output_extension="org.inkscape.output.svg.inkscape">
++  <defs
++     id="defs2432">
++    <linearGradient
++       inkscape:collect="always"
++       xlink:href="#linearGradient5773"
++       id="linearGradient6707"
++       x1="280.91534"
++       y1="332.44489"
++       x2="209.76765"
++       y2="249.97963"
++       gradientUnits="userSpaceOnUse" />
++    <linearGradient
++       id="linearGradient5773">
++      <stop
++         style="stop-color:black;stop-opacity:1;"
++         offset="0"
++         id="stop5775" />
++      <stop
++         style="stop-color:#6e6e6e;stop-opacity:1;"
++         offset="1"
++         id="stop5777" />
++    </linearGradient>
++    <inkscape:perspective
++       sodipodi:type="inkscape:persp3d"
++       inkscape:vp_x="0 : 32 : 1"
++       inkscape:vp_y="0 : 1000 : 0"
++       inkscape:vp_z="64 : 32 : 1"
++       inkscape:persp3d-origin="32 : 21.333333 : 1"
++       id="perspective2438" />
++  </defs>
++  <sodipodi:namedview
++     id="base"
++     pagecolor="#000000"
++     bordercolor="#666666"
++     borderopacity="1.0"
++     inkscape:pageopacity="1"
++     inkscape:pageshadow="2"
++     inkscape:zoom="5.5"
++     inkscape:cx="34.752154"
++     inkscape:cy="32"
++     inkscape:current-layer="layer1"
++     showgrid="true"
++     inkscape:document-units="px"
++     inkscape:grid-bbox="true"
++     inkscape:window-width="684"
++     inkscape:window-height="717"
++     inkscape:window-x="210"
++     inkscape:window-y="26" />
++  <metadata
++     id="metadata2435">
++    <rdf:RDF>
++      <cc:Work
++         rdf:about="">
++        <dc:format>image/svg+xml</dc:format>
++        <dc:type
++           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
++      </cc:Work>
++    </rdf:RDF>
++  </metadata>
++  <g
++     id="layer1"
++     inkscape:label="Layer 1"
++     inkscape:groupmode="layer"
++     transform="translate(3.5255985,-5.2941423)">
++    <rect
++       style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#ffffff;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:2.3499999;stroke-dasharray:none;stroke-opacity:1"
++       id="rect4827"
++       width="21.272297"
++       height="53.552982"
++       x="5.7165422"
++       y="9.4378853"
++       ry="3.7115929" />
++    <rect
++       style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#ffffff;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:2.3499999;stroke-dasharray:none;stroke-opacity:1"
++       id="rect4829"
++       width="21.272297"
++       height="53.552982"
++       x="36.505402"
++       y="9.4378853"
++       ry="3.7115929" />
++  </g>
++</svg>
+diff --git a/modules/gui/qt4/svgs/minimode/play.svg b/modules/gui/qt4/svgs/minimode/play.svg
+new file mode 100644
+index 0000000..0c94604
+--- /dev/null
++++ b/modules/gui/qt4/svgs/minimode/play.svg
+@@ -0,0 +1,104 @@
++<?xml version="1.0" encoding="UTF-8" standalone="no"?>
++<!-- Created with Inkscape (http://www.inkscape.org/) by Rohit Yadav(rohityadav89@gmail.com) -->
++<svg
++   xmlns:dc="http://purl.org/dc/elements/1.1/"
++   xmlns:cc="http://creativecommons.org/ns#"
++   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
++   xmlns:svg="http://www.w3.org/2000/svg"
++   xmlns="http://www.w3.org/2000/svg"
++   xmlns:xlink="http://www.w3.org/1999/xlink"
++   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
++   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
++   width="68.662003"
++   height="61.829334"
++   id="svg2430"
++   sodipodi:version="0.32"
++   inkscape:version="0.46"
++   version="1.0"
++   sodipodi:docname="play.svg"
++   inkscape:output_extension="org.inkscape.output.svg.inkscape">
++  <defs
++     id="defs2432">
++    <linearGradient
++       inkscape:collect="always"
++       xlink:href="#linearGradient5773"
++       id="linearGradient6721"
++       gradientUnits="userSpaceOnUse"
++       gradientTransform="matrix(-1,0,0,1,93.673386,-296.62784)"
++       x1="28.2188"
++       y1="358.5"
++       x2="96.062553"
++       y2="301.71875" />
++    <linearGradient
++       id="linearGradient5773">
++      <stop
++         style="stop-color:black;stop-opacity:1;"
++         offset="0"
++         id="stop5775" />
++      <stop
++         style="stop-color:#6e6e6e;stop-opacity:1;"
++         offset="1"
++         id="stop5777" />
++    </linearGradient>
++    <inkscape:perspective
++       sodipodi:type="inkscape:persp3d"
++       inkscape:vp_x="0 : 32 : 1"
++       inkscape:vp_y="0 : 1000 : 0"
++       inkscape:vp_z="64 : 32 : 1"
++       inkscape:persp3d-origin="32 : 21.333333 : 1"
++       id="perspective2438" />
++  </defs>
++  <sodipodi:namedview
++     id="base"
++     pagecolor="#000000"
++     bordercolor="#666666"
++     borderopacity="1.0"
++     inkscape:pageopacity="0"
++     inkscape:pageshadow="2"
++     inkscape:zoom="5.5"
++     inkscape:cx="34.752154"
++     inkscape:cy="32"
++     inkscape:current-layer="layer1"
++     showgrid="true"
++     inkscape:document-units="px"
++     inkscape:grid-bbox="true"
++     inkscape:window-width="640"
++     inkscape:window-height="717"
++     inkscape:window-x="210"
++     inkscape:window-y="26" />
++  <metadata
++     id="metadata2435">
++    <rdf:RDF>
++      <cc:Work
++         rdf:about="">
++        <dc:format>image/svg+xml</dc:format>
++        <dc:type
++           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
++      </cc:Work>
++    </rdf:RDF>
++  </metadata>
++  <g
++     id="layer1"
++     inkscape:label="Layer 1"
++     inkscape:groupmode="layer"
++     transform="translate(3.5255985,-5.2941423)">
++    <path
++       sodipodi:type="star"
++       style="opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#ffffff;stroke-width:7.51568316999999997;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:2.34999989999999981;stroke-dasharray:none;stroke-opacity:1"
++       id="path3914"
++       sodipodi:sides="3"
++       sodipodi:cx="233.85031"
++       sodipodi:cy="291.21225"
++       sodipodi:r1="45.964718"
++       sodipodi:r2="22.982359"
++       sodipodi:arg1="0"
++       sodipodi:arg2="1.0471976"
++       inkscape:flatsided="true"
++       inkscape:rounded="0"
++       inkscape:randomized="0"
++       d="M 279.81503,291.21225 L 210.86795,331.01886 L 210.86795,251.40564 L 279.81503,291.21225 z"
++       transform="matrix(0.908842,0,0,0.701257,-192.17125,-168.00582)"
++       inkscape:export-xdpi="300"
++       inkscape:export-ydpi="300" />
++  </g>
++</svg>
+diff --git a/modules/gui/qt4/svgs/minimode/previous.svg b/modules/gui/qt4/svgs/minimode/previous.svg
+new file mode 100644
+index 0000000..e38d806
+--- /dev/null
++++ b/modules/gui/qt4/svgs/minimode/previous.svg
+@@ -0,0 +1,81 @@
++<?xml version="1.0" encoding="UTF-8" standalone="no"?>
++<!-- Created with Inkscape (http://www.inkscape.org/) by by Rohit Yadav(rohityadav89@gmail.com) -->
++<svg
++   xmlns:dc="http://purl.org/dc/elements/1.1/"
++   xmlns:cc="http://creativecommons.org/ns#"
++   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
++   xmlns:svg="http://www.w3.org/2000/svg"
++   xmlns="http://www.w3.org/2000/svg"
++   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
++   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
++   width="71.84375"
++   height="60.78125"
++   id="svg2430"
++   sodipodi:version="0.32"
++   inkscape:version="0.46"
++   version="1.0"
++   sodipodi:docname="previous.svg"
++   inkscape:output_extension="org.inkscape.output.svg.inkscape">
++  <defs
++     id="defs2432">
++    <linearGradient
++       id="linearGradient5773">
++      <stop
++         style="stop-color:black;stop-opacity:1;"
++         offset="0"
++         id="stop5775" />
++      <stop
++         style="stop-color:#6e6e6e;stop-opacity:1;"
++         offset="1"
++         id="stop5777" />
++    </linearGradient>
++    <inkscape:perspective
++       sodipodi:type="inkscape:persp3d"
++       inkscape:vp_x="0 : 32 : 1"
++       inkscape:vp_y="0 : 1000 : 0"
++       inkscape:vp_z="64 : 32 : 1"
++       inkscape:persp3d-origin="32 : 21.333333 : 1"
++       id="perspective2438" />
++  </defs>
++  <sodipodi:namedview
++     id="base"
++     pagecolor="#000000"
++     bordercolor="#666666"
++     borderopacity="1.0"
++     inkscape:pageopacity="0"
++     inkscape:pageshadow="2"
++     inkscape:zoom="5.5"
++     inkscape:cx="2.5703358"
++     inkscape:cy="46.545455"
++     inkscape:current-layer="layer1"
++     showgrid="true"
++     inkscape:document-units="px"
++     inkscape:grid-bbox="true"
++     inkscape:window-width="684"
++     inkscape:window-height="717"
++     inkscape:window-x="210"
++     inkscape:window-y="26" />
++  <metadata
++     id="metadata2435">
++    <rdf:RDF>
++      <cc:Work
++         rdf:about="">
++        <dc:format>image/svg+xml</dc:format>
++        <dc:type
++           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
++      </cc:Work>
++    </rdf:RDF>
++  </metadata>
++  <g
++     id="layer1"
++     inkscape:label="Layer 1"
++     inkscape:groupmode="layer"
++     transform="translate(4.6491477,-2.8821023)">
++    <path
++       style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#ffffff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:2.3499999;stroke-dasharray:none;stroke-opacity:1"
++       d="M 38.069602,5.8821023 L -1.6491477,33.257102 L 38.069602,60.663352 L 38.069602,42.632102 L 64.194602,60.663352 L 64.194602,5.8821023 L 38.069602,23.913352 L 38.069602,5.8821023 z"
++       id="path4821"
++       inkscape:export-xdpi="300"
++       inkscape:export-ydpi="300" />
++  </g>
++</svg>
+diff --git a/modules/gui/qt4/svgs/minimode/unlock.svg b/modules/gui/qt4/svgs/minimode/unlock.svg
+new file mode 100644
+index 0000000..2dfa2bf
+--- /dev/null
++++ b/modules/gui/qt4/svgs/minimode/unlock.svg
+@@ -0,0 +1,141 @@
++<?xml version="1.0" encoding="UTF-8" standalone="no"?>
++<!-- Created with Inkscape (http://www.inkscape.org/) by Rohit Yadav(rohityadav89@gmail.com) -->
++<svg
++   xmlns:dc="http://purl.org/dc/elements/1.1/"
++   xmlns:cc="http://creativecommons.org/ns#"
++   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
++   xmlns:svg="http://www.w3.org/2000/svg"
++   xmlns="http://www.w3.org/2000/svg"
++   xmlns:xlink="http://www.w3.org/1999/xlink"
++   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
++   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
++   width="64"
++   height="64"
++   id="svg2430"
++   sodipodi:version="0.32"
++   inkscape:version="0.46"
++   version="1.0"
++   sodipodi:docname="unlock.svg"
++   inkscape:output_extension="org.inkscape.output.svg.inkscape">
++  <defs
++     id="defs2432">
++    <linearGradient
++       id="linearGradient5773">
++      <stop
++         style="stop-color:black;stop-opacity:1;"
++         offset="0"
++         id="stop5775" />
++      <stop
++         style="stop-color:#6e6e6e;stop-opacity:1;"
++         offset="1"
++         id="stop5777" />
++    </linearGradient>
++    <linearGradient
++       inkscape:collect="always"
++       xlink:href="#linearGradient5773"
++       id="linearGradient5794"
++       x1="96.0625"
++       y1="358.5"
++       x2="28.21875"
++       y2="301.71875"
++       gradientUnits="userSpaceOnUse"
++       gradientTransform="translate(-30.867898,-296.83664)" />
++    <inkscape:perspective
++       sodipodi:type="inkscape:persp3d"
++       inkscape:vp_x="0 : 32 : 1"
++       inkscape:vp_y="6.1230318e-14 : 1000 : 0"
++       inkscape:vp_z="64 : 32 : 1"
++       inkscape:persp3d-origin="32 : 21.333333 : 1"
++       id="perspective2438" />
++    <inkscape:perspective
++       sodipodi:type="inkscape:persp3d"
++       inkscape:vp_x="0 : 526.18109 : 1"
++       inkscape:vp_y="0 : 1000 : 0"
++       inkscape:vp_z="744.09448 : 526.18109 : 1"
++       inkscape:persp3d-origin="372.04724 : 350.78739 : 1"
++       id="perspective2390" />
++    <inkscape:perspective
++       id="perspective10"
++       inkscape:persp3d-origin="372.04724 : 350.78739 : 1"
++       inkscape:vp_z="744.09448 : 526.18109 : 1"
++       inkscape:vp_y="0 : 1000 : 0"
++       inkscape:vp_x="0 : 526.18109 : 1"
++       sodipodi:type="inkscape:persp3d" />
++  </defs>
++  <sodipodi:namedview
++     id="base"
++     pagecolor="#ffffff"
++     bordercolor="#666666"
++     borderopacity="1.0"
++     inkscape:pageopacity="0"
++     inkscape:pageshadow="2"
++     inkscape:zoom="5.5"
++     inkscape:cx="33.275886"
++     inkscape:cy="25.517999"
++     inkscape:current-layer="layer1"
++     showgrid="true"
++     inkscape:document-units="px"
++     inkscape:grid-bbox="true"
++     inkscape:window-width="885"
++     inkscape:window-height="717"
++     inkscape:window-x="334"
++     inkscape:window-y="26" />
++  <metadata
++     id="metadata2435">
++    <rdf:RDF>
++      <cc:Work
++         rdf:about="">
++        <dc:format>image/svg+xml</dc:format>
++        <dc:type
++           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
++      </cc:Work>
++    </rdf:RDF>
++  </metadata>
++  <g
++     id="layer1"
++     inkscape:label="Layer 1"
++     inkscape:groupmode="layer"
++     transform="translate(4.6491477,-2.8821023)">
++    <rect
++       style="fill:#5f5f5f;fill-opacity:1;stroke:#5f5f5f;stroke-width:5.24329471999999974;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
++       id="rect3214"
++       width="44.137821"
++       height="9.1326895"
++       x="5.010632"
++       y="6.0817199" />
++    <rect
++       style="fill:#5f5f5f;fill-opacity:1;stroke:#5f5f5f;stroke-width:4.51937007999999985;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
++       id="rect3220"
++       width="27.150017"
++       height="11.030287"
++       x="6.835763"
++       y="-49.547409"
++       transform="matrix(0,1,-1,0,0,0)" />
++    <rect
++       style="fill:#5f5f5f;fill-opacity:1;stroke:#5f5f5f;stroke-width:3.53309536;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
++       id="rect3222"
++       width="15.229023"
++       height="12.018208"
++       x="6.4331899"
++       y="-16.135607"
++       transform="matrix(0,1,-1,0,0,0)" />
++    <rect
++       style="fill:#5f5f5f;fill-opacity:1;stroke:#5f5f5f;stroke-width:2.10756660000000018;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
++       id="rect3226"
++       width="57.892433"
++       height="33.974003"
++       x="-1.5953645"
++       y="31.754316"
++       rx="9.0624809"
++       ry="6.7758546" />
++    <g
++       transform="translate(-36.264519,-272.19663)"
++       id="g3301"
++       inkscape:label="Layer 1">
++      <path
++         style="fill:#000000;fill-opacity:1"
++         d="M 56.618871,328.71256 C 56.552673,328.55139 57.44051,325.59906 58.025293,324.03578 L 58.20953,323.54328 L 58.921132,323.54328 C 59.580538,323.54328 59.635973,323.56586 59.676888,323.85109 C 59.748355,324.34932 60.341818,324.82176 61.209125,325.07085 C 64.047734,325.8861 67.606248,325.10826 67.606248,323.67251 C 67.606248,323.52384 67.762777,323.48172 68.315124,323.48172 C 69.153593,323.48172 69.010592,323.24697 69.982656,326.21906 C 70.353248,327.35214 70.637366,328.40488 70.614031,328.55848 L 70.571603,328.83774 L 63.634036,328.86961 C 57.499251,328.89779 56.687489,328.87961 56.618871,328.71256 z M 61.939123,322.08263 C 60.88691,321.84522 60.489392,321.66791 60.489392,321.43602 C 60.489392,321.24401 61.259511,318.8007 61.318762,318.80473 C 61.333772,318.80576 61.58328,318.88643 61.873226,318.98402 C 62.59499,319.22694 64.534598,319.22395 65.30775,318.97871 C 65.643346,318.87227 65.942158,318.80783 65.971778,318.83549 C 66.112207,318.96669 66.825983,321.43166 66.7659,321.57793 C 66.565959,322.06471 63.350043,322.40097 61.939123,322.08263 z M 62.565142,315.89198 C 62.438291,315.85776 62.334504,315.7731 62.334504,315.70383 C 62.334504,315.39198 62.767948,314.2292 62.946314,314.06256 C 63.221224,313.80573 64.087983,313.82475 64.345062,314.09326 C 64.592406,314.3516 65.031839,315.70831 64.906189,315.8257 C 64.799229,315.92563 62.89025,315.97967 62.565142,315.89198 z"
++         id="path2402" />
++    </g>
++  </g>
++</svg>
+-- 
+1.6.0.4
+

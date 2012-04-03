@@ -1,0 +1,693 @@
+From 46ca35d1ebaf6b338ffe43ae476e74270ff848cb Mon Sep 17 00:00:00 2001
+From: Rohit Yadav <rohityadav89@gmail.com>
+Date: Tue, 23 Jun 2009 19:37:18 +0200
+Subject: [PATCH] Minimode Widget
+
+---
+ modules/gui/qt4/components/interface_widgets.cpp |  515 ++++++++++++++++++++++
+ modules/gui/qt4/components/interface_widgets.hpp |  106 +++++
+ 2 files changed, 621 insertions(+), 0 deletions(-)
+
+diff --git a/modules/gui/qt4/components/interface_widgets.cpp b/modules/gui/qt4/components/interface_widgets.cpp
+index 5b4d532..82015d0 100644
+--- a/modules/gui/qt4/components/interface_widgets.cpp
++++ b/modules/gui/qt4/components/interface_widgets.cpp
+@@ -8,6 +8,7 @@
+  *          Jean-Baptiste Kempf <jb@videolan.org>
+  *          Rafaël Carré <funman@videolanorg>
+  *          Ilkka Ollakka <ileoo@videolan.org>
++ *          Rohit Yadav <rohit.yadav.cse07@itbhu.ac.in>
+  *
+  * This program is free software; you can redistribute it and/or modify
+  * it under the terms of the GNU General Public License as published by
+@@ -29,6 +30,7 @@
+ #endif
+ 
+ #include "components/interface_widgets.hpp"
++#include "util/input_slider.hpp" /* InputSlider */
+ 
+ #include "menus.hpp"             /* Popup menu on bgWidget */
+ 
+@@ -42,6 +44,13 @@
+ #include <QMenu>
+ #include <QWidgetAction>
+ 
++#include <QDesktopWidget>
++#include <QUrl>
++#include <QFont>
++#include <QHBoxLayout>
++#include <QVBoxLayout>
++#include <QGridLayout>
++
+ #ifdef Q_WS_X11
+ # include <X11/Xlib.h>
+ # include <qx11info_x11.h>
+@@ -499,4 +508,510 @@ void TimeLabel::setCaching( float f_cache )
+     setText( "Buff: " + amount + "%" );
+ }
+ 
++/**********************************************************************
++ * VLC MiniMode Widget
++ * SVG/CSS based Media Playback Controller & Notification Widget
++ **********************************************************************/
++/*To disable SVGs, convert SVGs to PNGs and change SvgButton Class */
++/* Define Max width and height for SVG icons */
++#define I_MAX_W 18
++#define I_MAX_H 18
++
++/* #undef this option to disable CSS/SVG and use a dull widget */
++#define MINIMODE_USE_CSS 1
++#define MINIMODE_USE_SVG 1
++
++/* Image Paths, PNGs not added to vlc.qrc */
++#ifdef  MINIMODE_USE_SVG
++    #define IMAGE_BG       ":/minimode/bg.svg"
++    #define IMAGE_ALBUMART ":/minimode/albumart.svg"
++    #define IMAGE_PLAY     ":/minimode/play.svg"
++    #define IMAGE_PAUSE    ":/minimode/pause.svg"
++    #define IMAGE_NEXT     ":/minimode/next.svg"
++    #define IMAGE_PREVIOUS ":/minimode/previous.svg"
++    #define IMAGE_LOCK     ":/minimode/lock.svg"
++    #define IMAGE_UNLOCK   ":/minimode/unlock.svg"
++    #define IMAGE_KNOB     ":/minimode/knob.svg"
++#endif
++
++/* MiniModeWidget: Constructor, Functions */
++MiniModeWidget::MiniModeWidget( intf_thread_t *_p_i, QWidget *parent )
++        : QWidget( parent, Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint ), p_intf( _p_i )
++{
++    /* Toggle control */
++    b_toggle        = false; /* Show Pause, 0 = pause, 1 = play */
++    b_lock          = false; /* Show Unlocked, Lock = 1, Unlock = 0 */
++    b_mouseCaptured = false; /* Set Mouse Captured false */
++
++    /* Construct Meta Data Information */
++    qs_title  = "VLC";
++    qs_artist = "VideoLAN";
++    qs_album  = "Copyright (C) 1996-2009"; /* Ps. Unicode for Copyright is 0x00a9 */
++
++    setWindowTitle( "VLC MiniMode" );
++    setAcceptDrops( true );     /* Enable Drag n Drop Files to Play! */
++    setWindowOpacity( 0.88 );   /* Make little transparent and set SVG as Background */
++
++    QPixmap mask( IMAGE_BG );   /* Create Shaped Widget */
++    mask = mask.mask();
++    setMask( QBitmap( mask ) ); /* Suggestion: Can be made cool with themes */
++
++    QPixmap pixmap( IMAGE_BG );
++    setFixedSize( pixmap.width(), pixmap.height() );
++
++    QPalette palette;
++    palette.setBrush( backgroundRole(), QBrush( pixmap ) );
++    setPalette( palette );
++
++    /* Album-Art Container */
++    artwork = new QLabel();
++    artwork->setPixmap( QPixmap( IMAGE_ALBUMART ) );
++    artwork->adjustSize();
++    artwork->resize( 48, 48 );
++    artwork->setMaximumSize( 50, 50 );
++    artwork->setScaledContents( true );
++
++    /* Construct minimal VLC Media Controller UI Buttons, set i_maxw, i_maxh */
++    /* Ps. The original Widget had Shuffle, Repeat, but were removed coz that made it messy */
++    svgPrev  = new SvgButton( IMAGE_PREVIOUS, I_MAX_W,  I_MAX_H );
++    svgPlay  = new SvgButton( IMAGE_PLAY,     I_MAX_W,  I_MAX_H );
++    svgNext  = new SvgButton( IMAGE_NEXT,     I_MAX_W,  I_MAX_H );
++
++    /* Add Widgets to 'controls' container: Play/Pause, Previous, Next */
++    QHBoxLayout *controller = new QHBoxLayout();
++    /* Ps. The original Widget had Shuffle, Repeat, but were removed coz that made it messy */
++    controller->addWidget( svgPrev );
++    controller->addWidget( svgPlay );
++    controller->addWidget( svgNext );
++    controller->setMargin( 0 );
++
++    QVBoxLayout *controlsLayout = new QVBoxLayout();
++    controlsLayout->addWidget( artwork, 2, Qt::AlignTop | Qt::AlignCenter );
++    controlsLayout->addLayout( controller, 0 );
++    controlsLayout->setMargin( 0 );
++
++    /* Meta Data Labels */
++    title  = new QLabel() ;
++    artist = new QLabel();
++    album  = new QLabel();
++
++    /* Set Palette for Media Info / Meta Data */
++    QPalette infoPalette( QColor( 255, 255, 255 ) );
++    infoPalette.setColor( QPalette::Foreground, QColor( 255, 255, 255 ) ); /* Text Colour */
++
++    /* Font Sizes */
++    /* Change accordingly, following values are tested on Ubuntu 9.04 */
++    int i_title  = 10;
++    int i_artist = 8;
++    int i_album  = 8;
++
++    #define FONT_SETTINGS( label, palette, fontname, fontsize, fontweight  ) \
++            label->setPalette( palette ); label->setFont( QFont( fontname, fontsize, fontweight ) );
++    #define LABELS_SETTINGS( label, ww, sc ) \
++            label->setText( qs_##label ); label->setWordWrap( ww ); label->setScaledContents( sc );
++
++    FONT_SETTINGS( title,  infoPalette, "Serif", i_title,  99  );
++    FONT_SETTINGS( artist, infoPalette, "Serif", i_artist, QFont::DemiBold );
++    FONT_SETTINGS( album,  infoPalette, "Serif", i_album,  QFont::Normal);
++
++    LABELS_SETTINGS( title,  true, true );
++    LABELS_SETTINGS( artist, true, true );
++    LABELS_SETTINGS( album,  true, true );
++
++    /* Cool Blue Playback Slider */
++    playbackControl = new InputSlider( Qt::Horizontal, this );
++    playbackControl->setMaximumHeight( 10 );
++
++    #ifdef MINIMODE_USE_CSS
++    playbackControl->setStyleSheet(
++        " QSlider::groove:horizontal"
++            "{ background: #5f5f5f; height: 1px; margin: 0px 0; }"
++        " QSlider::handle:horizontal"
++            "{ image: url("IMAGE_KNOB"); width: 16px; height: 16px; margin: -4px 0; }"
++        " QSlider::add-page:horizontal"
++            "{ background: #5f5f5f; }"
++        " QSlider::sub-page:horizontal"
++            "{ background: #1987de;}" ); /* Cool Blue */
++    #endif
++
++    /* Meta Data and Playback Slider Container */
++    QVBoxLayout *infoLayout = new QVBoxLayout();
++    infoLayout->addWidget( title, 1, Qt::AlignTop );
++    infoLayout->addWidget( playbackControl, 0, Qt::AlignBottom );
++    infoLayout->addWidget( artist, 1, Qt::AlignBottom );
++    infoLayout->addWidget( album, 1, Qt::AlignBottom );
++    infoLayout->setMargin( 0 );
++
++    /* Posh Pink Volume Slider */   
++    volumeControl = new QSlider( Qt::Vertical, this );
++    volumeControl->setMaximum( config_GetInt( p_intf, "qt-volume-complete" ) ? 400 : 200 );
++
++    #ifdef MINIMODE_USE_CSS
++    volumeControl->setStyleSheet(
++        " QSlider::groove:vertical"
++            "{ background: #5f5f5f; width: 2px; }"
++        " QSlider::handle:vertical"
++            "{ image: url("IMAGE_KNOB"); width: 12px; height: 12px; margin: 0 -4px; }"
++        " QSlider::sub-page:vertical"
++            "{ background: #5f5f5f; width: 2px;}"
++        " QSlider::add-page:vertical"
++            "{ background: #fe1987; width: 2px; }" ); /* Posh Pink */
++    #endif
++
++    /* Create Widget Lock Button: Locks Widget from Hiding */
++    svgLock = new SvgButton( IMAGE_UNLOCK, I_MAX_W, I_MAX_H );
++
++    QVBoxLayout *volumeLockLayout = new QVBoxLayout();
++    volumeLockLayout->addWidget( volumeControl, 2, Qt::AlignTop | Qt::AlignHCenter | Qt::AlignVCenter );
++    volumeLockLayout->addWidget( svgLock, 1, Qt::AlignBottom | Qt::AlignHCenter | Qt::AlignVCenter );
++    volumeLockLayout->setMargin( 0 );
++
++    /* Main Widget Layout */
++    QHBoxLayout *layout = new QHBoxLayout();
++    layout->addLayout( controlsLayout, 0 );
++    layout->addLayout( infoLayout, 2 );
++    layout->addLayout( volumeLockLayout, 0 );
++    layout->setMargin( 10 );
++    setLayout(layout);
++
++    /* Grid Layout can be used, then On changing songs the layout jerks */
++    #if 0
++    /* Optional: Grid Layout, Causes word-wrapping and alignment problem */
++    QGridLayout *layout = new QGridLayout();
++    layout->addWidget( artwork, 0, 0, 3, 3, Qt::AlignCenter );
++    layout->addWidget( svgPrev, 3, 0, 1, 1, Qt::AlignTop | Qt::AlignHCenter );
++    layout->addWidget( svgPlay, 3, 1, 1, 1, Qt::AlignTop | Qt::AlignHCenter );
++    layout->addWidget( svgNext, 3, 2, 1, 1, Qt::AlignTop | Qt::AlignHCenter );
++    layout->addWidget( title,   0, 3, 1, 1 );
++    layout->addWidget( playbackControl, 1, 3, 1, 1, Qt::AlignVCenter );
++    layout->addWidget( artist,  2, 3, 1, 1, Qt::AlignBottom );
++    layout->addWidget( album,   3, 3, 1, 1, Qt::AlignBottom );
++    layout->addWidget( volumeControl, 0, 4, 3, 1, Qt::AlignHCenter );
++    layout->addWidget( svgLock, 3, 4, 1, 1, Qt::AlignCenter );
++    layout->setMargin(10);
++    setLayout(layout);
++    #endif
++
++    /* Show the widget on the Top-Right of the Screen */
++    QDesktopWidget *desktop = QApplication::desktop();
++
++    /* Show widget on top-right on the Desktop */
++    move( ( desktop->width() - width() - 10 ), 30 );
++    show();
++
++    /* Make Timer, Hide Widget after 5 Secs */
++    timer = new QTimer( this );
++    timer->setInterval( 5000 );
++    timer->setSingleShot( false );
++    timer->start();
++
++    /* Connect Timer */
++    CONNECT( timer, timeout(), this, hideWidget() );
++
++    /* Connect VLC playback controller objects with corresponding functions */
++    CONNECT( svgPrev, svgClicked(), this, prevClicked() );
++    CONNECT( svgPlay, svgClicked(), this, playClicked() );
++    CONNECT( svgNext, svgClicked(), this, nextClicked() );
++    CONNECT( svgLock, svgClicked(), this, toggleLock()  );
++
++    /* Update Meta Data */
++    CONNECT( THEMIM->getIM(), infoChanged( input_item_t* ),
++                this, updateMetaData( input_item_t* ) );
++    CONNECT( THEMIM->getIM(), currentMetaChanged( input_item_t* ),
++                this, updateMetaData( input_item_t* ) );
++    
++    /* Update Album Art */
++    CONNECT( THEMIM->getIM(), artChanged( QString ),
++                this, updateArtwork( const QString & ) );
++
++    /* Play/Pause Toggle Synchronization */   
++    CONNECT( THEMIM->getIM(), statusChanged( int ), 
++                this, syncNotifierController( const int & ) );
++
++    /* Sync. Volume Controls */
++    CONNECT( THEMIM, volumeChanged( void ), 
++                this, updateNotifierVolume( void ) );
++    CONNECT( volumeControl, valueChanged( int ), 
++                this, notifierVolumeChanged( int ) ); 
++
++    /* Sync. Playback Control */
++    CONNECT( playbackControl, sliderDragged( float ), 
++                THEMIM->getIM(), sliderUpdate( float ) );
++    CONNECT( THEMIM->getIM(),  positionUpdated( float , int, int ), 
++                playbackControl, setPosition( float, int, int ) );
++
++    msg_Dbg( p_intf, "VLC MiniMode Widget Initialized" );
++
++}
++
++MiniModeWidget::~MiniModeWidget()
++{
++    /* Clean Exit :-) */
++    delete timer;
++    delete p_intf;
++
++    delete title;
++    delete artist;
++    delete album;
++    delete artwork;
++
++    delete volumeControl;
++    delete playbackControl;
++
++    delete svgPrev;
++    delete svgPlay;
++    delete svgNext;
++    delete svgLock;
++}
++
++void MiniModeWidget::toggleVisibility()
++{
++    if( b_lock )
++    {
++        b_lock = false;
++        svgLock->load( tr( IMAGE_UNLOCK ) );
++        hide();
++    }
++    else
++    {
++        b_lock = true;
++        svgLock->load( tr( IMAGE_LOCK ) );
++        show();
++    }
++}
++
++/* Update Meta Data of the Media being played */
++bool MiniModeWidget::updateMetaData( input_item_t* data )
++{
++    /* DONE: Playback Controls on Widget */
++
++    if( data == NULL )
++        return false;
++
++    /* FIXED: Artist and Album names updation */
++    qs_title.sprintf( "%s", input_item_GetName( data ) ); 
++    qs_artist.sprintf( "%s", input_item_GetArtist( data ) ); 
++    qs_album.sprintf( "%s", input_item_GetAlbum( data ) );
++
++    if( qs_title.isEmpty() )
++        qs_title = tr( "Unknown Title" ); /* It won't be shown, already taken care ;-) */
++
++    if( qs_artist.isEmpty() )
++        qs_artist = tr( "" ); 
++
++    if( qs_album.isEmpty() )
++        qs_album = tr( "" );
++    
++    /* Clear Labels to avoid painting errors */ 
++    title->clear();
++    artist->clear();
++    album->clear();
++
++    title->setText( qs_title );
++    artist->setText( qs_artist );
++    album->setText( qs_album );
++
++    /* If Widget is Unlocked then show it */
++    show();
++    restartTimer();
++
++    return true;
++}
++
++/* Update Album Art */
++void MiniModeWidget::updateArtwork( const QString &url )
++{
++    artwork->clear();
++
++    if( url.isEmpty() )
++    {
++        /* Set the default VLC Monochrome Logo */
++        artwork->setPixmap( QPixmap( IMAGE_ALBUMART ) );
++    }
++    else
++    {
++        artwork->setPixmap( QPixmap( url ) );
++    }
++}
++
++void MiniModeWidget::stopTimer()
++{
++    timer->stop();
++    disconnect( timer, SIGNAL( timeout() ), this, SLOT( hideWidget() ) );
++}
++
++void MiniModeWidget::restartTimer()
++{
++    stopTimer();
++    /* If Widget locked, keep timer stopped */
++    if( b_lock == false )
++    {
++        timer->setInterval( 5000 );
++        timer->setSingleShot( false );
++        timer->start();
++        CONNECT( timer, timeout(), this, hideWidget() );
++    }
++}
++
++void MiniModeWidget::hideWidget()
++{
++    timer->stop();
++    
++    if( !b_lock )
++        hide();
++}
++
++/* Volume Control Interfaces */
++#define MNW_MAX_VOLUME 200
++void MiniModeWidget::notifierVolumeChanged( int i_vol )
++{
++    int i_res = i_vol * ( AOUT_VOLUME_MAX / 2 ) / MNW_MAX_VOLUME;
++    aout_VolumeSet( p_intf, i_res );
++}
++
++void MiniModeWidget::updateNotifierVolume( void )
++{
++    audio_volume_t i_volume;
++    aout_VolumeGet( p_intf, &i_volume );
++    i_volume = ( (i_volume + 1) *   MNW_MAX_VOLUME ) / ( AOUT_VOLUME_MAX / 2 );
++
++    volumeControl->setValue( i_volume );
++}
++
++/* Sync UI Elements with Main Interface UI */
++void MiniModeWidget::syncNotifierController( const int &i_status )
++{
++    /* Enumeration in vlc_input.h */
++    switch( i_status )
++    {
++        case PLAYING_S: svgPlay->load( tr( IMAGE_PAUSE ) ); b_toggle = false; break;
++        case END_S:     /* STOP */ 
++        case PAUSE_S:   svgPlay->load( tr ( IMAGE_PLAY ) ); b_toggle = true;  break;
++        default: break; 
++    }
++}
++
++/* UI Button Slots */
++void MiniModeWidget::playClicked()
++{
++    if( b_toggle )
++    {
++        b_toggle = false;
++        svgPlay->load( tr( IMAGE_PAUSE ) );
++        restartTimer();
++    }
++    else
++    {
++        b_toggle = true;
++        svgPlay->load( tr( IMAGE_PLAY ) );
++        stopTimer();
++    }
++    THEMIM->togglePlayPause();
++    b_mouseCaptured = false;
++}
++
++void MiniModeWidget::prevClicked()
++{
++    restartTimer();
++    THEMIM->prev();
++    b_mouseCaptured = false;
++}
++
++void MiniModeWidget::nextClicked()
++{
++    restartTimer();
++    THEMIM->next();
++    b_mouseCaptured = false;
++}
++
++void MiniModeWidget::toggleLock()
++{
++    if( b_lock )
++    {
++        b_lock = false;
++        svgLock->load( tr( IMAGE_UNLOCK ) );
++        restartTimer();
++    }
++    else
++    {
++        b_lock = true;
++        svgLock->load( tr( IMAGE_LOCK ) );
++        stopTimer();
++    }
++    b_mouseCaptured = false;
++}
++
++void MiniModeWidget::mousePressEvent( QMouseEvent *event )
++{
++    /* Global Position of the wdt wrt Desktop */
++    QPoint globalPos = mapToGlobal( rect().topLeft() );
++
++    /* event->pos() is relative to the topleft point of the widget */
++    i_posX = event->x();
++    i_posY = event->y();
++
++    b_mouseCaptured = false;
++
++    /* Mouse Position Hack ;-) */
++    if( ( event->globalX() - globalPos.x() ) < width() &&
++        ( event->globalY() - globalPos.y() ) < height() )
++    {
++        b_mouseCaptured = true;
++        event->accept();
++    }
++}
++
++void MiniModeWidget::mouseReleaseEvent( QMouseEvent* event )
++{
++    b_mouseCaptured = false;
++}
++
++void MiniModeWidget::mouseMoveEvent( QMouseEvent *event )
++{
++    QPoint globalPos = mapToGlobal( rect().topLeft() );
++
++    /* Move Widget with the cursor */
++    if( b_mouseCaptured )
++    {
++        move( ( event->globalX() - i_posX ), ( event->globalY() - i_posY ) );
++        event->accept();
++    }
++}
++
++/* Drag n Drop Event Handlers */
++void MiniModeWidget::dropEvent( QDropEvent *event )
++{
++    emit filesDropped( event );
++}
++
++void MiniModeWidget::dragEnterEvent(QDragEnterEvent *event)
++{
++     event->acceptProposedAction();
++}
++
++void MiniModeWidget::dragMoveEvent(QDragMoveEvent *event)
++{
++     event->acceptProposedAction();
++}
++
++void MiniModeWidget::dragLeaveEvent(QDragLeaveEvent *event)
++{
++     event->accept();
++}
++
++/*****************************************************************************
++ * SvgButton Class, Constructor and Interfaces
++ *****************************************************************************/
++SvgButton::SvgButton( const QString& url, int width, int height, QWidget *parent )
++        : QSvgWidget( url, parent )
++{
++    setMinimumSize( width, height );
++    setMaximumSize( width, height );
++}
++
++void SvgButton::mouseReleaseEvent( QMouseEvent *event )
++{
++    if( event->button() == Qt::LeftButton )
++        emit svgClicked();
++}
+ 
+diff --git a/modules/gui/qt4/components/interface_widgets.hpp b/modules/gui/qt4/components/interface_widgets.hpp
+index a34158a..bdcc8da 100644
+--- a/modules/gui/qt4/components/interface_widgets.hpp
++++ b/modules/gui/qt4/components/interface_widgets.hpp
+@@ -7,6 +7,7 @@
+  * Authors: Clément Stenac <zorglub@videolan.org>
+  *          Jean-Baptiste Kempf <jb@videolan.org>
+  *          Rafaël Carré <funman@videolanorg>
++ *          Rohit Yadav <rohit.yadav.cse07@itbhu.ac.in>
+  *
+  * This program is free software; you can redistribute it and/or modify
+  * it under the terms of the GNU General Public License as published by
+@@ -37,12 +38,20 @@
+ #include "components/controller_widget.hpp"
+ 
+ //#include <vlc_aout.h> Visualizer
++#include <vlc_input.h>
++#include <vlc_input_item.h> /* Meta Data for Notification Widget */
++#include <vlc_meta.h>
+ 
+ #include <QWidget>
+ #include <QFrame>
+ #include <QLabel>
+ #include <QMouseEvent>
+ 
++#include <QTimer>
++#include <QBitmap>
++#include <QSvgWidget> /* Media Notification Widget */
++
++class InputSlider;
+ class ResizeEvent;
+ class QPalette;
+ class QPixmap;
+@@ -214,4 +223,101 @@ signals:
+     void updateRequested();
+ };
+ 
++/******************** VLC MiniMode Widget ****************/
++/* Svg/CSS based Media Playback Controller & Notification Widget */
++
++class SvgButton;
++
++class MiniModeWidget : public QWidget
++{
++    Q_OBJECT
++
++public:
++    MiniModeWidget( intf_thread_t *_p_intf, QWidget *parent = 0 );
++    ~MiniModeWidget();
++    void toggleVisibility();
++
++private:
++    intf_thread_t *p_intf;
++
++    /* UI Control Flags */
++    bool b_toggle;
++    bool b_lock;
++    bool b_mouseCaptured;
++
++    /* Stores Attributes for Moving Widget */
++    int i_posX;
++    int i_posY;
++
++    /* Show/Hide widget using timer */
++    QTimer *timer;
++    void stopTimer();
++    void restartTimer();
++
++    /* Store Meta Data */
++    QLabel *title;
++    QLabel *artist;
++    QLabel *album;
++    QLabel *artwork;
++
++    QString qs_title;
++    QString qs_artist;
++    QString qs_album;
++
++    /* SVG based UI Elements */
++    SvgButton *svgPrev;
++    SvgButton *svgPlay;
++    SvgButton *svgNext;
++    SvgButton *svgLock;
++
++    /* SVG/CSS based UI Elements */
++    QSlider *volumeControl;
++    InputSlider *playbackControl;
++
++protected:
++    void mousePressEvent(QMouseEvent *); /* Hack inside :-) */
++    void mouseMoveEvent(QMouseEvent *);
++    void mouseReleaseEvent( QMouseEvent* );
++    void dropEvent( QDropEvent *); /* Drag n Drop code taken from MainInterface */
++    void dragEnterEvent( QDragEnterEvent * );
++    void dragMoveEvent( QDragMoveEvent * );
++    void dragLeaveEvent( QDragLeaveEvent * );
++
++public slots:
++    /* Slots to handle UI */
++    void playClicked();
++    void prevClicked();
++    void nextClicked();
++    void toggleLock();
++    void hideWidget();
++
++    /* Slots to handle Updates from IM */
++    bool updateMetaData( input_item_t* data );
++    void updateArtwork( const QString & );
++    void updateNotifierVolume( void );
++
++    /* Slots to Synchronize Changes with IM */
++    void notifierVolumeChanged( int );
++    void syncNotifierController( const int & );
++
++signals:
++    void filesDropped( QDropEvent * );
++};
++
++/******************** Svg Button Widget ****************/
++class SvgButton : public QSvgWidget
++{
++    Q_OBJECT
++
++public:
++    SvgButton( const QString &url, int width, int height, QWidget *parent = 0 );
++
++signals:
++    void svgClicked();
++
++protected:
++    void mouseReleaseEvent(QMouseEvent *);
++};
++
+ #endif
++
+-- 
+1.6.0.4
+

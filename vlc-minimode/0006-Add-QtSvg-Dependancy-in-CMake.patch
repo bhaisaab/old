@@ -1,0 +1,25 @@
+From d9ae82a6be36ed01f4717af295c865b80733fb7b Mon Sep 17 00:00:00 2001
+From: Rohit Yadav <rohityadav89@gmail.com>
+Date: Tue, 23 Jun 2009 19:39:32 +0200
+Subject: [PATCH] Add QtSvg Dependancy in CMake
+
+---
+ extras/buildsystem/cmake/include/config.cmake |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/extras/buildsystem/cmake/include/config.cmake b/extras/buildsystem/cmake/include/config.cmake
+index 0b626a1..c184f0b 100644
+--- a/extras/buildsystem/cmake/include/config.cmake
++++ b/extras/buildsystem/cmake/include/config.cmake
+@@ -519,7 +519,7 @@ if(QT4_FOUND)
+   set(QT4LOCALEDIR ${QT4LOCALEDIR}/share/qt4/translations )
+   vlc_add_module_compile_flag(qt4 ${QT_CFLAGS})
+   vlc_add_module_compile_flag(qt4 -DQT4LOCALEDIR=\\\\"${QT4LOCALEDIR}\\\\" )
+-  vlc_module_add_link_libraries(qt4 ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY})
++  vlc_module_add_link_libraries(qt4 ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTSVG_LIBRARY})
+ 
+   # Define our own qt4_wrap_ui macro to match wanted behaviour
+   MACRO (VLC_QT4_WRAP_UI outfiles )
+-- 
+1.6.0.4
+

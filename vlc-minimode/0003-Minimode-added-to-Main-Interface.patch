@@ -1,0 +1,126 @@
+From 29bb1b0299a9b9df3d76c41beea382244f97a1d2 Mon Sep 17 00:00:00 2001
+From: Rohit Yadav <rohityadav89@gmail.com>
+Date: Tue, 23 Jun 2009 19:36:33 +0200
+Subject: [PATCH] Minimode added to Main Interface
+
+---
+ modules/gui/qt4/main_interface.cpp |   39 ++++++++++++++++++++++++++++++++---
+ modules/gui/qt4/main_interface.hpp |    6 +++++
+ 2 files changed, 41 insertions(+), 4 deletions(-)
+
+diff --git a/modules/gui/qt4/main_interface.cpp b/modules/gui/qt4/main_interface.cpp
+index ae71307..94da284 100644
+--- a/modules/gui/qt4/main_interface.cpp
++++ b/modules/gui/qt4/main_interface.cpp
+@@ -167,6 +167,13 @@ MainInterface::MainInterface( intf_thread_t *_p_intf ) : QVLCMW( _p_intf )
+      *********************************/
+     initSystray();
+ 
++    /*****************************************************************
++     * Create VLC MiniMode: Media Notification and Playback Widget
++     *****************************************************************/
++    #if 1
++    initMiniModeWidget(true);
++    #endif
++
+     /**************************
+      * Various CONNECTs on IM *
+      **************************/
+@@ -202,8 +209,7 @@ MainInterface::MainInterface( intf_thread_t *_p_intf ) : QVLCMW( _p_intf )
+         CONNECT( THEMIM->getIM(), statusChanged( int ),
+                  this, updateSystrayTooltipStatus( int ) );
+     }
+-
+-
++ 
+     /* END CONNECTS ON IM */
+ 
+     /************
+@@ -968,7 +974,7 @@ void MainInterface::createSystray()
+     sysTray->setToolTip( qtr( "VLC media player" ));
+ 
+     systrayMenu = new QMenu( qtr( "VLC media player" ), this );
+-    systrayMenu->setIcon( iconVLC );
++    systrayMenu->setIcon( iconVLC ); 
+ 
+     QVLCMenu::updateSystrayMenu( this, p_intf, true );
+     sysTray->show();
+@@ -1252,6 +1258,32 @@ void MainInterface::toggleFullScreen( void )
+ 
+ }
+ 
++ /************************************************************************
++ * Mini Mode Media Playback Controller & Notification Widget
++ * Credits (Svg, CSS, UI Design and Coding): Rohit Yadav
++ ************************************************************************/
++void MainInterface::initMiniModeWidget( bool b_opt )
++{
++    if( b_opt == true )
++   {
++        /* Create VLC MiniMode Widget Object */
++        miniModeWidget = new MiniModeWidget( p_intf, 0 );
++       /**
++         * CONNECTS on MiniMode
++        **/
++        CONNECT( miniModeWidget, filesDropped( QDropEvent * ),
++                 this, miniModeDropEvent(QDropEvent * ) );
++
++ 
++    /* END CONNECTS ON IM */
++    }
++}
++
++void MainInterface::miniModeDropEvent( QDropEvent * event )
++{
++    dropEventPlay( event, true );
++}
++
+ /*****************************************************************************
+  * PopupMenuCB: callback triggered by the intf-popupmenu playlist variable.
+  *  We don't show the menu directly here because we don't want the
+@@ -1283,4 +1315,3 @@ static int IntfShowCB( vlc_object_t *p_this, const char *psz_variable,
+     /* Show event */
+      return VLC_SUCCESS;
+ }
+-
+diff --git a/modules/gui/qt4/main_interface.hpp b/modules/gui/qt4/main_interface.hpp
+index 4ea7ba3..c14ad4c 100644
+--- a/modules/gui/qt4/main_interface.hpp
++++ b/modules/gui/qt4/main_interface.hpp
+@@ -47,6 +47,7 @@ class ControlsWidget;
+ class InputControlsWidget;
+ class FullscreenControllerWidget;
+ class SpeedControlWidget;
++class MiniModeWidget;
+ class QMenu;
+ class QSize;
+ 
+@@ -88,6 +89,9 @@ public:
+     /* Sizehint() */
+     virtual QSize sizeHint() const;
+ 
++    /* Init VLC MiniMode Widget */
++    void initMiniModeWidget( bool b_opt );
++
+ protected:
+     void dropEventPlay( QDropEvent *, bool);
+     virtual void dropEvent( QDropEvent *);
+@@ -109,6 +113,7 @@ private:
+     ControlsWidget      *controls;
+     InputControlsWidget *inputC;
+     FullscreenControllerWidget *fullscreenControls;
++    MiniModeWidget *miniModeWidget; /* SVG/CSS based Media Notification & Playback Controller Widget */
+ 
+     void createMainWidget( QSettings* );
+     void createStatusBar();
+@@ -158,6 +163,7 @@ public slots:
+     void toggleFullScreen();
+     void toggleFSC();
+     void popupMenu( const QPoint& );
++    void miniModeDropEvent( QDropEvent * );
+ 
+     /* Manage the Video Functions from the vout threads */
+     void releaseVideoSlot( void );
+-- 
+1.6.0.4
+

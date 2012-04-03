@@ -1,0 +1,32 @@
+From a7cc8a8b84bf69ad1710e9ecd57c37e5cb039432 Mon Sep 17 00:00:00 2001
+From: Rohit Yadav <rohityadav89@gmail.com>
+Date: Tue, 23 Jun 2009 19:35:22 +0200
+Subject: [PATCH] Restructured File Paths
+
+---
+ modules/gui/qt4/vlc.qrc |   11 +++++++++++
+ 1 files changed, 11 insertions(+), 0 deletions(-)
+
+diff --git a/modules/gui/qt4/vlc.qrc b/modules/gui/qt4/vlc.qrc
+index bfb9b37..9d723d5 100644
+--- a/modules/gui/qt4/vlc.qrc
++++ b/modules/gui/qt4/vlc.qrc
+@@ -108,4 +108,15 @@
+         <file alias="sout" >pixmaps/prefs/advprefs_sout.png</file>
+         <file alias="video" >pixmaps/prefs/advprefs_video.png</file>
+     </qresource>
++    <qresource prefix="/minimode" >
++        <file alias="albumart.svg" >svgs/minimode/albumart.svg</file>
++        <file alias="bg.svg" >svgs/minimode/background.svg</file>
++        <file alias="next.svg" >svgs/minimode/next.svg</file>
++        <file alias="pause.svg" >svgs/minimode/pause.svg</file>
++        <file alias="play.svg" >svgs/minimode/play.svg</file>
++        <file alias="previous.svg" >svgs/minimode/previous.svg</file>
++        <file alias="lock.svg" >svgs/minimode/lock.svg</file>
++        <file alias="unlock.svg" >svgs/minimode/unlock.svg</file>
++        <file alias="knob.svg" >svgs/minimode/knob.svg</file>
++    </qresource>
+ </RCC>
+-- 
+1.6.0.4
+
