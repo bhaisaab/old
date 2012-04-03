@@ -1,0 +1,35 @@
+#! /bin/sh
+
+##  Bootstrap file for the AutoQt
+##  Template for Qt projects requiring GNU Build System
+##  Author: Rohit Yadav <rohityadav89@gmail.com>
+
+set -e
+set -x
+
+cd "$(dirname "$0")"
+
+##
+## Check for various tools
+##
+
+# Check for pkg-config
+if pkg-config --version >/dev/null 2>&1; then
+  # We have pkg-config, everything is cool.
+  PKGCONFIG=yes
+else
+  PKGCONFIG=no
+fi
+
+if [ "$PKGCONFIG" = "no" ]; then
+  cat << EOF
+
+==============================================================
+NOTE: "pkg-config" is missing from your system. Certain
+libraries may not be detected properly.
+EOF
+fi
+
+exec autoreconf --install --force --verbose
+
+echo "Successfully bootstrapped"

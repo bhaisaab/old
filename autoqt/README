@@ -1,0 +1,7 @@
+See the INSTALL file for installation instructions.
+
+As of June 24, 2009 this project is no longer maintained.
+CMakeQt is intended to replace AutoQt.
+CMakeQt uses cmake build system which is better and easier to use and maintain.
+
+Fork it here: http://github.com/rohityadav/cmakeqt

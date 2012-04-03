@@ -1,0 +1,31 @@
+INSTALL file for AutoQt
+
+Dependencies
+============
+
+- Autotools etc.
+- Qt framework >= 4.4.0
+
+Get the sources
+===============
+
+  git clone git://github.com/rohityadav/autoqt.git
+
+Building AutoQt
+=============
+
+./bootstrap
+./configure
+make
+
+Running AutoQt
+============
+
+./autoqt
+
+Issues
+======
+
+If you run into problems, 
+contact: rohityadav89 AT gmail.com
+
