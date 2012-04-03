@@ -1,0 +1,10 @@
+
+[Desktop Entry]
+Name=GtkMoo
+Comment=Bulls and Cows in Gtk/C++.
+Exec=gtkmoo %U
+Icon=gtkmoo
+Terminal=false
+Type=Application
+Categories=GNOME;GTK;Game;BoardGame;
+Name[en_IN]=Gtk Moo

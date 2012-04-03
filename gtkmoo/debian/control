@@ -1,0 +1,13 @@
+Source: gtkmoo
+Section: games
+Priority: optional
+Maintainer: Rohit Yadav <rohityadav89@gmail.com>
+Standards-Version: 3.9.1
+Build-Depends: cdbs, debhelper (>= 7), cmake, libx11-dev, libgtk2.0-dev, libglib2.0-dev, libatk1.0-dev, libc6-dev, libgconf2-dev, libpango1.0-dev
+Homepage: http://rohityadav.in/projects/gtkmoo
+
+Package: gtkmoo
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, libgtk2.0-bin
+Description: GtkMoo
+ The Old Code-Breaking Bulls and Cows Game in Gtk+

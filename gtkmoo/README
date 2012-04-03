@@ -1,0 +1,15 @@
+GtkMoo
+Copyright 2008-10 Rohit Yadav.
+
+First create build folder:
+  mkdir build && cd build
+
+To cross compile for Windows on Linux:
+  cmake -DCMAKE_TOOLCHAIN_FILE=cmake/toolchain-win32.cmake ..
+
+Otherwise:
+  cmake ..
+  make
+
+To package:
+  make package
