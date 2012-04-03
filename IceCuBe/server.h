@@ -1,0 +1,24 @@
+///////////////////////////////////////////////////////////////////////////////
+// server.h
+// IceCuBe Messenger
+//
+// © Rohit Yadav, 2008-2009.
+// License: GNU GPL v2 or later
+// ALL RIGHTS RESERVED.
+///////////////////////////////////////////////////////////////////////////////
+
+#include "wx/socket.h"
+#include "wx/wfstream.h"
+
+/*
+IC_PROTOCOL
+
+
+*/
+
+class IceServer: public wxSocketServer
+{
+  
+  
+};
+  
