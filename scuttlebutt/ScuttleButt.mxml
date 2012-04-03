@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+/*
+    ScuttleButt (Messenger)
+    Copyright Rohit Yadav <rohityadav89@gmail.com>, 2009-10
+    http://scuttlebutt.sourceforge.net, http://whatifi.undo.it
+    
+    The usual bla bla and DON'T SUE US FOR ANYTHING :-)
+    (And I'm not copying this license on every other file)
+    Report bugs, send patches and for other queries contact: rohityadav89@gmail.com
+    
+    THIS SOURCE CODE IS PROVIDED "AS IS" AND "WITH ALL FAULTS", WITHOUT 
+    ANY TECHNICAL SUPPORT OR ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING,
+    BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+    FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  ALSO, THERE IS NO WARRANTY OF 
+    NON-INFRINGEMENT, TITLE OR QUIET ENJOYMENT.  IN NO EVENT SHALL ADOBE 
+    OR ITS SUPPLIERS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, 
+    EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, 
+    PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+    OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
+    WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR 
+    OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOURCE CODE, EVEN IF
+    ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+    NOTE: Flex SDK 4.0.0.12222 or above overlayed with AIR SDK 2.0Beta or above
+    is required to build this project.  
+*/
+-->
+<mx:Application
+    xmlns:fx="http://ns.adobe.com/mxml/2009" 
+    xmlns:s="library://ns.adobe.com/flex/spark" 
+    xmlns:mx="library://ns.adobe.com/flex/halo"
+    xmlns:view="com.scuttlebutt.view.*"
+    usePreloader="true" preloader="CustomLoader" 
+    styleName="AppStyle" initialize="onInit(event);"
+    applicationComplete="onLoadComplete(event);">
+    
+    <fx:Script> 
+        <![CDATA[
+            import com.scuttlebutt.events.XMLFileServiceEvent;
+            import com.scuttlebutt.managers.*;
+            import com.scuttlebutt.services.XMLFileService;
+            import com.scuttlebutt.utils.XMLParserUtil;
+            import com.scuttlebutt.view.panels.SettingsPanel;
+            
+            import flash.display.BitmapData;
+            import flash.display.Loader;
+            import flash.display.NativeMenu;
+            import flash.display.NativeMenuItem;
+            import flash.display.NativeWindow;
+            import flash.events.Event;
+            import flash.events.InvokeEvent;
+            import flash.events.MouseEvent;
+            import flash.events.ScreenMouseEvent;
+			
+			import flash.events.ErrorEvent;
+			import flash.events.IOErrorEvent;
+			import air.update.ApplicationUpdaterUI;
+			import air.update.events.UpdateEvent;
+			import mx.controls.Alert;
+			
+			private var appUpdater:ApplicationUpdaterUI = new ApplicationUpdaterUI();
+			private var  updateXMLURL:String = "http://scuttlebutt.yorg.in/update.xml";
+            
+            private var _nativeWindow : NativeWindow;
+            
+            private var _icon : Loader = new Loader();
+            private var iconBitmapData : BitmapData;
+            private var systemTrayIcon : SystemTrayIcon;
+            private var dockIcon : DockIcon;
+            private var taskbarMenu : NativeMenu;
+            
+            private const IDLE_TIME : int = 120; //In Seconds
+            
+            private static const APP_NAME_STRING : String = "ScuttleButt Manager";
+            private static const APP_SETTINGS_STRING : String = "Settings";
+            
+            //Initialise: Load Application Settings File
+            private function onInit( event:Event ) : void
+            {
+                AppManager.getInstance().settingFileLocation = "settings.xml";
+                loadSettingsXMLFile();
+            }
+            
+            //LoadXMLFile Function: Sets event listner and error handlers
+            private function loadSettingsXMLFile( event : Event = null ) : void
+            {
+                var settingsXMLLoader : XMLFileService = new XMLFileService();
+                settingsXMLLoader.addEventListener( XMLFileServiceEvent.XML_FILE_NOT_FOUND , onSettingsNotFound );
+                settingsXMLLoader.addEventListener(XMLFileServiceEvent.XML_LOADED, settingsLoadedHandler );
+                settingsXMLLoader.loadXMLFileFromStorage( AppManager.getInstance().settingFileLocation );
+            }
+            
+            //If settings not found copy the template in app folder
+            private function onSettingsNotFound( event : Event ) : void
+            {
+                var xmlFileService : XMLFileService = new XMLFileService();
+                xmlFileService.addEventListener( XMLFileServiceEvent.XML_FILE_COPIED , loadSettingsXMLFile );
+                xmlFileService.copyXMLFileFromApplicationDirectoryToStorage( AppManager.getInstance().settingFileLocation );
+            }
+            
+            //Parse loaded settings XML file
+            private function settingsLoadedHandler( event : XMLFileServiceEvent ) : void
+            {
+                trace("[XML loaded] : \n" + event.xml);
+                AppManager.getInstance().settings = XMLParserUtil.parseSettingsXML( event.xml );
+                //Now tell peers about yourself 
+                AppManager.getInstance().refreshUserList();
+            }
+
+			private function onIOError(event:IOErrorEvent):void
+			{
+				trace("Error loading URL.");
+			}
+			
+			//Check for updates
+			private function checkForUpdate():void 
+			{
+				AppManager.getInstance().isUserProvoked = false;
+				AppManager.getInstance().preCheckForUpdate(null);
+			}
+			
+			private function onError(event:ErrorEvent):void {
+				Alert.show(event.toString());
+			}
+					
+            //Application complete, create menus and icons
+            private function onLoadComplete( event: Event ) : void
+            {
+                trace("[App Load Complete]");
+                this.stage.quality = StageQuality.BEST;
+                _nativeWindow = stage.nativeWindow;
+                _nativeWindow.title = "ScuttleButt Messenger";
+                
+                stage.nativeWindow.addEventListener(Event.CLOSE, onMainAppExit );   
+                titleBar.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDownHandler);
+
+                var menuItem : NativeMenuItem = null;
+                taskbarMenu = new NativeMenu();
+                
+                //AppManager
+                menuItem = taskbarMenu.addItem( new NativeMenuItem(APP_NAME_STRING, false));
+                menuItem.name = APP_NAME_STRING;
+                menuItem.checked = true;
+                menuItem.addEventListener(Event.SELECT, onOpenMainApp);
+                
+                //AppSettings
+                menuItem = taskbarMenu.addItem( new NativeMenuItem(APP_SETTINGS_STRING, false));
+                menuItem.name = APP_SETTINGS_STRING;
+                menuItem.addEventListener(Event.SELECT, openSettingsPanel);
+                
+                //Separator
+                menuItem = taskbarMenu.addItem( new NativeMenuItem("", true));
+                
+                //Quit
+                menuItem = taskbarMenu.addItem( new NativeMenuItem("Quit", false));
+                menuItem.name = "Quit";
+                menuItem.addEventListener(Event.SELECT, onMainAppExit);
+                
+                //SysTray Icon
+                if ( NativeApplication.supportsSystemTrayIcon )
+                {   
+                    _icon.contentLoaderInfo.addEventListener( Event.COMPLETE, iconLoadComplete );
+                    _icon.load( new URLRequest( "assets/icons/icon_128.png" ) );
+                    systemTrayIcon = NativeApplication.nativeApplication.icon as SystemTrayIcon;
+                    systemTrayIcon.tooltip = "ScuttleButt";
+                    systemTrayIcon.menu = taskbarMenu;
+                    
+                    systemTrayIcon.addEventListener(ScreenMouseEvent.CLICK, onAppIconClick);
+                }
+                
+                //DockIcon
+                if ( NativeApplication.supportsDockIcon )
+                {
+                    _icon.contentLoaderInfo.addEventListener( Event.COMPLETE , iconLoadComplete );
+                    _icon.load(new URLRequest("assets/icons/icon_128.png"));
+                    dockIcon = NativeApplication.nativeApplication.icon as DockIcon;
+                    dockIcon.menu = taskbarMenu;
+
+                    NativeApplication.nativeApplication.addEventListener(InvokeEvent.INVOKE, onOpenMainApp );
+                }
+                
+                //Idle/Active Event listeners
+                NativeApplication.nativeApplication.idleThreshold = IDLE_TIME;
+                NativeApplication.nativeApplication.addEventListener(Event.USER_IDLE, onIdle);
+                NativeApplication.nativeApplication.addEventListener (Event.USER_PRESENT, onActive);
+                
+                //On first run open settings and welcom message
+                if(AppManager.getInstance().settings._firstRun == true)
+                {
+                    AppManager.getInstance().showNotification("ScuttleButt", "Welcome user. We hope you will like this app!");
+                    openSettingsPanel();
+                }
+				
+				checkForUpdate();      
+            }
+            
+            //Icon Load Complete handler
+            private function iconLoadComplete( event : Event ) : void
+            {
+                iconBitmapData = event.target.content.bitmapData;
+                NativeApplication.nativeApplication.icon.bitmaps = [ iconBitmapData ];
+            }
+            
+            //Dock/SysTray Icon Click Handler
+            private function onAppIconClick( event : Event ) : void
+            {
+                if(!_nativeWindow.visible)
+                {
+                    _nativeWindow.visible = true;
+                    _nativeWindow.orderToFront();
+                }
+                else
+                    _nativeWindow.visible = false;
+            }
+
+            //User Idle handler
+            private function onIdle( event : Event ) : void 
+            {
+                trace("[User Status] Idle");
+                AppManager.getInstance().toggleUserPresence(true);    
+            }
+            
+            //User Active/Present Handler
+            private function onActive( event : Event) : void 
+            {
+                trace("[User Status] Active");
+                AppManager.getInstance().toggleUserPresence(false);     
+            }
+
+            //UI Move Handler
+            private function onMouseDownHandler( event : MouseEvent ):void
+            {
+                _nativeWindow.startMove();
+            }
+            
+            //Open Settings Panel Handler
+            private function openSettingsPanel( event : Event = null ) : void
+            {
+                onOpenMainApp();
+                var settingsPanel : SettingsPanel;
+                settingsPanel = SettingsPanel.show();
+            }
+            
+            //Open App Handler
+            private function onOpenMainApp( event : Event = null ) : void
+            {
+                _nativeWindow.visible = true;
+                _nativeWindow.orderToFront();
+                this.setFocus();
+                taskbarMenu.getItemByName(APP_NAME_STRING).checked = true;
+            }
+            
+            //App Close Handler
+            private function onMainAppClose( event : Event = null ) : void
+            {
+                //this.visible = false;
+                stage.nativeWindow.visible = false;
+                taskbarMenu.getItemByName(APP_NAME_STRING).checked = false;
+            }
+            
+            //App Exit handler
+            private function onMainAppExit( event : Event = null ) : void
+            {
+                //Send self-destruct UDP Packet!
+                AppManager.getInstance().settings._user.alive = false;
+                NetworkManager.getInstance().broadcast();
+				
+				//Close sockets
+				NetworkManager.getInstance().closeNetworkSockets();
+				
+				//Close all chat windows
+                WindowManager.getInstance().closeAllWindows();
+                _nativeWindow.close();
+                trace("[Exiting Application]");
+                NativeApplication.nativeApplication.exit();
+            }
+        ]]>
+        
+    </fx:Script>
+    
+    <!-- To change, make a CSS theme and put the path here  -->
+    <fx:Style source="assets/css/light.css"/>
+
+    <mx:VBox styleName="AppUIStyle" width="100%" height="100%">
+        <!-- Title Bar -->
+        <mx:HBox id="titleBar" styleName="titleBarStyle" width="100%">
+            <mx:Image source="@Embed('assets/images/light/logo.png')"/>
+            <mx:Spacer width="100%"/> 
+            <!-- Multicast chat and group file transfer to be added after selection in AIR-O-MANIA ...
+            <mx:Button styleName="chatButton" toolTip="Chat with Everyone on LAN"/>	  
+            <mx:Button styleName="downloadButton" toolTip="Download Manager"/>	                
+            -->
+            <mx:Button styleName="settingsButton" toolTip="Open Settings" click="openSettingsPanel(event)"/>	
+            <mx:Button styleName="minimizeButton" toolTip="Minimize" click="stage.nativeWindow.minimize();"/>		
+            <mx:Button styleName="closeButton" toolTip="Exit" click="onMainAppClose();"/>
+        </mx:HBox>
+        
+        <!-- User List -->
+        <view:ListPanel styleName="listPanelStyle" width="100%" height="100%"/>
+        
+        <!-- Status Bar -->
+        <view:StatusBar styleName="statusBarStyle" width="100%" />     
+        
+    </mx:VBox>
+
+</mx:Application>

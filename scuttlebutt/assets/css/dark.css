@@ -1,0 +1,97 @@
+@namespace s "library://ns.adobe.com/flex/spark";
+@namespace mx "library://ns.adobe.com/flex/halo";
+
+/*
+ Depreciated Theme, will be modified in later release of ScuttleButt
+*/
+
+.settingsButton
+{
+    up-skin: Embed("../images/dark/settings.png");
+    down-skin: Embed("../images/settings.png");
+    over-skin: Embed("../images/settings-over.png");
+}
+
+.closeButton
+{
+    up-skin: Embed("../images/close-window.png");
+    down-skin: Embed("../images/close-window.png");
+    over-skin: Embed("../images/close-window-over.png");
+}
+
+.minimizeButton
+{
+    up-skin: Embed("../images/minimize-window.png");
+    down-skin: Embed("../images/minimize-window.png");
+    over-skin: Embed("../images/minimize-window-over.png");
+}
+
+.homeButton
+{
+    up-skin: Embed("../images/home.png");
+    down-skin: Embed("../images/home.png");
+    over-skin: Embed("../images/home-over.png");
+}
+
+.groupButton
+{    
+    up-skin: Embed("../images/groups.png");
+    down-skin: Embed("../images/groups.png");
+    over-skin: Embed("../images/groups-over.png");
+}
+
+.chatButton
+{
+    up-skin: Embed("../images/chat.png");
+    down-skin: Embed("../images/chat.png");
+    over-skin: Embed("../images/chat-over.png");
+}
+
+.callButton
+{
+    up-skin: Embed("../images/call.png");
+    down-skin: Embed("../images/call.png");
+    over-skin: Embed("../images/call-over.png");
+}
+
+.searchButton
+{
+    up-skin: Embed("../images/search.png");
+    down-skin: Embed("../images/search.png");
+    over-skin: Embed("../images/search-over.png");
+}
+
+.downloadManagerButton
+{
+    up-skin: Embed("../images/download.png");
+    down-skin: Embed("../images/download.png");
+    over-skin: Embed("../images/download-over.png");    
+}
+
+.changeViewButton
+{
+    up-skin: Embed("../images/search.png");
+    down-skin: Embed("../images/search.png");
+    over-skin: Embed("../images/search-over.png");    
+}
+
+.refreshButton
+{
+    up-skin: Embed("../images/refresh.png");
+    down-skin: Embed("../images/refresh.png");
+    over-skin: Embed("../images/refresh-over.png");  
+}
+
+.addUserButton
+{
+    up-skin: Embed("../images/adduser.png");
+    down-skin: Embed("../images/adduser.png");
+    over-skin: Embed("../images/adduser-over.png");  
+}
+
+.aboutButton
+{
+    up-skin: Embed("../images/about.png");
+    down-skin: Embed("../images/about.png");
+    over-skin: Embed("../images/about-over.png");  
+}

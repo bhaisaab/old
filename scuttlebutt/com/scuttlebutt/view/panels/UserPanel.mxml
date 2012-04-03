@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox xmlns:fx="http://ns.adobe.com/mxml/2009" 
+         xmlns:s="library://ns.adobe.com/flex/spark" 
+         xmlns:mx="library://ns.adobe.com/flex/halo"
+         verticalGap="2" horizontalGap="2"
+         styleName="userPanel" initialize="onInit(event);">
+    
+    <fx:Declarations>
+        <mx:Glow id="glowImage" duration="2400" alphaFrom="1.0" alphaTo="0.0" 
+                 blurXFrom="0.0" blurXTo="50.0" blurYFrom="0.0" blurYTo="50.0" color="0xE44972"/>
+        <mx:Glow id="unglowImage" duration="1000" alphaFrom="0.3" alphaTo="1.0" 
+                 blurXFrom="50.0" blurXTo="0.0" blurYFrom="50.0" blurYTo="0.0" color="0xE4497200"/>
+    </fx:Declarations>
+    
+    <fx:Script>
+        <![CDATA[
+            import com.scuttlebutt.managers.AppManager;
+            import com.scuttlebutt.model.User;
+            import flash.display.BitmapData;
+            import flash.display.Loader;
+            import flash.events.Event;
+            
+            [Bindable]
+            public var _user : User;
+            [Bindable]
+            public var _statusURL : String;
+            [Bindable]
+            public var _avatarPath : String = "avatar.png";
+            private var _icon : Loader = new Loader();
+            private var iconBitmapData : BitmapData;
+            
+            private function onInit(event : Event) : void
+            {
+                _user = AppManager.getInstance().settings._user;
+                AppManager.getInstance()._userPanel = this;
+                glowImage.play([avatarImage]);
+            }
+            
+        ]]>
+    </fx:Script>
+
+    <mx:VBox styleName="avatarBox" verticalAlign="middle" horizontalAlign="center">
+        <mx:Image id="avatarImage"  horizontalAlign="center" verticalAlign="middle"  smoothBitmapContent="true"
+                  styleName="avatarBox" source="{_avatarPath}" width="48" height="48" scaleContent="true"/>        
+    </mx:VBox> 
+
+    <mx:VBox verticalGap="0" horizontalGap="0" width="100%">
+        <mx:HBox verticalGap="0" horizontalGap="0" verticalAlign="bottom" width="100%">
+            <mx:Label text="{_user.name}" styleName="nameUserInfo" />
+            <mx:Label text=" {_user.statusMessage.slice(0,20)}..." styleName="messageUserInfo" />
+        </mx:HBox>
+        <mx:Label text="{_user.ip} | {_user.group}" styleName="otherUserInfo"/>          
+    </mx:VBox>
+    <mx:Spacer width="100%"/>
+    <mx:VBox verticalAlign="bottom" horizontalAlign="center">
+        <mx:Image id="statusImage" horizontalAlign="center" verticalAlign="middle" smoothBitmapContent="true" source="{_statusURL}"/> 
+    </mx:VBox>
+   
+</mx:HBox>

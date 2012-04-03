@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Window xmlns:fx="http://ns.adobe.com/mxml/2009" 
+           xmlns:s="library://ns.adobe.com/flex/spark" 
+           xmlns:mx="library://ns.adobe.com/flex/halo" 
+           xmlns:ui="com.scuttlebutt.view.panels.*"
+           verticalGap="0"
+           styleName="AppStyle" width="100%" height="100%" layout="absolute"
+           creationComplete="onComplete(event)"         
+           initialize="onInit(event);" xmlns:renderers="com.scuttlebutt.view.renderers.*" currentState="Full">
+    
+    <fx:Script>
+        <![CDATA[
+            import com.scuttlebutt.managers.AppManager;
+            import com.scuttlebutt.managers.NetworkManager;
+            import com.scuttlebutt.model.ChatMessage;
+            import com.scuttlebutt.model.User;
+            import com.scuttlebutt.utils.XMLParserUtil;
+            
+            import flash.display.*;
+            import flash.events.*;
+            import flash.geom.*;
+            import flash.net.*;
+            import flash.ui.*;
+            import flash.utils.ByteArray;
+            
+            import mx.binding.utils.*;
+            import mx.collections.ArrayList;
+            import mx.containers.*;
+            import mx.controls.*;
+            import mx.core.*;
+            import mx.events.*;
+            import mx.logging.*;
+            
+            public static const CHATWINDOW_CLOSED : String = "ChatWindow_Closed";
+            
+            [Bindable]
+            public var _peerName : String = "TestUser";
+            private var _peer : User;
+            [Bindable]
+            public var _statusMessage1 :String = "";
+            [Bindable]
+            public var _statusMessage2 :String = "";
+            
+            public var toggleDownloadPane : Boolean = false;
+            
+            [Bindable]
+            public var messages : ArrayList;
+
+            [Bindable]
+            private var fileReceiveArrayList : ArrayList;
+            [Bindable]
+            private var fileSendArrayList : ArrayList;
+            private var _file : File;
+            
+            private var w : int;
+            private var h : int;
+        
+            private function onInit( event:Event ) : void
+            {
+                this.showTitleBar = false;
+                this.showStatusBar = false;
+                this.showGripper = false;
+                this.title = _peerName;
+                this.systemChrome =  NativeWindowSystemChrome.NONE;
+                this.transparent = true;
+                this.resizable = false;
+                
+                this.minHeight = 480;
+                this.minWidth = 560;
+
+                windowTitleBar.addEventListener(MouseEvent.MOUSE_DOWN, onChatWindowMouseDownHandler);
+                messages = new ArrayList;
+                
+                fileReceiveArrayList = new ArrayList;
+                fileSendArrayList = new ArrayList;
+                
+                _file = new File();
+                
+                this.currentState = "Compact";
+            }
+            
+            private function onComplete( event : Event ) : void
+            {
+                stage.nativeWindow.addEventListener(Event.CLOSE, closeHandler );
+				textUpdateTextInput.setFocus();
+                
+                textUpdateTextInput.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
+            }
+
+            public function updateUserInfo( val : User ) : void
+            {
+                _peer = val;
+                _peerName = _peer.name;
+            }
+            
+            private function onChatWindowMouseDownHandler( event : MouseEvent ) : void
+            {
+                this.stage.nativeWindow.startMove();
+            }
+            
+            private function minimizeHandler( event : Event = null ) : void
+            {
+                this.stage.nativeWindow.minimize();
+            }
+            
+            private function closeHandler( event : Event = null ) : void
+            {   
+                this.visible = false;
+            }
+            
+            private function resizeHandler() : void
+            {
+                this.stage.nativeWindow.startResize(NativeWindowResize.BOTTOM_RIGHT);
+            }
+            
+            private function textUpdateTextChange() : void
+            {
+                var isSendButtonEnabled : Boolean = true;
+                
+                var color : String;
+                
+                _statusMessage1 = AppManager.getInstance().settings._user.name;
+                _statusMessage2 = "is typing...";
+                
+                if ( textUpdateTextInput.text.length >= 1 && textUpdateTextInput.text.length <= 1024 )
+                {
+                    color = "#000000";
+                }
+                else
+                {
+                    color = "#E44972";
+                    
+                    isSendButtonEnabled = false;
+                }
+                
+                textUpdateTextInput.setStyle( "color", color );
+                
+                sendButton.enabled = isSendButtonEnabled;
+            }
+            
+            private function textAreaTextInput( event : TextEvent ) : void
+            {
+                if ( event.text == "\n" )
+                {
+                    trace("[TEXT INPUT] ENTER DETECTED");
+                    //Bug here: Fix, clear text input as ENTER is pressed
+                    event.preventDefault();
+                }
+            }
+            
+            public function onChatMessageReceive( msg : ChatMessage ) : void
+            {
+                messages.addItem(msg);
+                MsgList.verticalScrollPosition = MsgList.maxVerticalScrollPosition;
+            }
+			
+			private function onKeyDown( event : KeyboardEvent ) : void
+			{	
+                trace("[KEY DOWN EVENT]");
+                
+				if ( event.keyCode == Keyboard.ENTER )
+                {
+                    trace("[ENTER KEY DOWN]");
+					/*if (sendButton.enabled)
+					{
+						sendTextUpdate();
+					}*/
+					//Alert.show("Bug here! Hit Send Button for a while!", "Enter Event Found!");
+					sendTextUpdate();
+				}
+			}
+			
+			/*private function onKeyUp(event:KeyboardEvent):void
+			{
+				if ( event.keyCode == Keyboard.ENTER )
+				{
+					clearTextBox();
+				}
+			}*/
+			
+			private function clearTextBox() : void
+			{
+                trace("[CLEAR TEXT BOX]");
+				_statusMessage1 = "";
+				_statusMessage2 = "";
+				textUpdateTextInput.text = "";
+				sendButton.enabled = false;
+				textUpdateTextInput.setFocus();
+			}
+
+
+            private function sendTextUpdate() : void
+            {
+                if(!textUpdateTextInput.text.length)
+                    return;
+             
+                trace("[CHATWINDOW] SendTextUpdate called");
+                
+                var msg : ChatMessage = new ChatMessage();
+                msg.name = AppManager.getInstance().settings._user.name;
+                msg.message = textUpdateTextInput.text;
+                
+                clearTextBox();
+                textUpdateTextInput.setFocus();
+                
+                //Send to Network Manager
+                NetworkManager.getInstance().chatDatagramSend(_peer.ip, XMLParserUtil.buildChatDatagramXML(msg.message));
+                
+                msg.avatar = AppManager.getInstance().settings._user.avatar;
+                //Display Messages on Top
+                messages.addItem(msg);
+                
+                MsgList.verticalScrollPosition = MsgList.maxVerticalScrollPosition;
+            }
+            
+            private function addFile( event : Event ) : void
+            {
+                _file.addEventListener( Event.SELECT , onFileSelect );
+                _file.browseForOpen("Select Files to transfer");
+            }
+            
+            private function onFileSelect( event : Event ) : void
+            {
+                var results : File = event.target as File;
+                //Add results.url in the file list
+                trace("[File Added] " + results.url);
+                fileSendArrayList.addItem(results.url);
+                
+                results.removeEventListener( Event.SELECT , onFileSelect );
+            }
+            
+            private function removeFile( event : Event ) : void
+            {
+                if(FileSendList.selectedIndex > -1)
+                    fileSendArrayList.removeItemAt(FileSendList.selectedIndex);
+            }
+            
+            private function stripFileName( url : String ) : String
+            {
+                var i : int;
+                i = url.length-1;
+                while(i--)
+                {
+                    if(url.charAt(i) == "/")
+                        break;
+                }
+                return url.slice(i, url.length-1);
+            }
+
+
+            protected function callClickHandler(event:MouseEvent):void
+            {                
+                AppManager.getInstance().showVoiceChatWindow(_peer);
+            }
+                        
+            private function onVoiceCallReceive( event : DatagramSocketDataEvent ) : void
+            {      
+                
+                /*
+                if(voiceCallState == "WAITING")
+                {
+                    if(event.data.toString() == "START")
+                    {
+                        //call func here, ok by default
+                        
+                    }
+                        
+                }
+                if(voiceCallState == "WAITING")    
+                    event.data.toString();
+                
+                //Update user's IP address
+                user.ip = event.srcAddress;
+                trace("[UDP] SID:  " + user.sid + " IP: "+user.ip);
+                
+                //[ROBUSTNESS] If user packet is asking for an update, send an update!
+                if(user.respond)
+                    sendUserInfoDataGram(user.ip, false);
+                
+                //Tell UserManager to do stuff
+                UsersManager.getInstance().addNewUser(user);
+                */
+            }
+
+        ]]>
+        
+    </fx:Script>
+    
+    <mx:states>
+        <s:State name="Compact"/>
+        <s:State  name="Full"/>
+    </mx:states>
+    
+    <mx:HBox id="paneContainer" styleName="transparentBoxStyle" width="100%" height="100%" horizontalGap="0">
+    <mx:VBox id="chatWindowPane" minWidth="360" width="360" height="100%" styleName="AppUIStyle">
+        <mx:HBox id="windowTitleBar" styleName="titleBarStyle" width="100%">
+            <mx:Image  source="@Embed('assets/images/light/icon-small.png')"/>
+            <mx:Label styleName="windowTitle" text="{_peerName}"/>
+            <mx:Spacer width="100%"/>
+            <!-- Group chat and voice chat to be added after selection in AIR-O-MANIA
+            <mx:Button styleName="groupButton" toolTip="Add more users"/>	                	                	  
+            -->
+            <mx:Button styleName="callButton" toolTip="Start Voice Chat" click="callClickHandler(event)"/>
+            <mx:Button styleName="downloadButton" toolTip="Send/Receive Files" 
+                       click="{ if(!toggleDownloadPane) this.currentState='Full';
+                                else this.currentState = 'Compact';
+                                toggleDownloadPane = !toggleDownloadPane; 
+                                 }"/>	                	   	
+            <mx:Button styleName="minimizeButton" toolTip="Minimize" click="minimizeHandler();"/>		
+            <mx:Button styleName="closeButton" toolTip="Exit" click="closeHandler();"/>
+        </mx:HBox>
+        
+        <mx:List id="MsgList" styleName="chatMsgListStyle" width="100%" height="100%" contentBackgroundAlpha="0"
+                 dataProvider="{messages}" variableRowHeight="true"
+                 itemRenderer="com.scuttlebutt.view.renderers.ChatMessageRenderer" />
+                
+        <!-- Begin udpate text input controls //-->
+        <mx:VBox width="100%">
+            <mx:TextArea id="textUpdateTextInput" 
+                         width="100%" height="64" wordWrap="true"
+                         styleName="textUpdateTextInput" 
+                         textInput="textAreaTextInput(event);"  
+                         change="textUpdateTextChange();"/>    
+            
+            <mx:HBox width="100%" horizontalAlign="right" paddingBottom="5">
+                <mx:HBox horizontalGap="0" width="100%">
+                    <mx:Text text="{_statusMessage1}" styleName="statusBarUsersCount" />
+                    <mx:Text text="{_statusMessage2}" styleName="statusBarUsersText" />	        
+                </mx:HBox>	
+                <mx:Spacer width="100%"/>	
+                <mx:Label text="{((textUpdateTextInput.text.length-1024)*-1)}" 
+                          styleName="statusBarMessageStyle" />
+                <mx:Button id="sendButton" enabled="false" label="Send" click="sendTextUpdate();" />
+                <mx:VBox>
+                    <mx:Spacer height="100%"/>
+                    <mx:Image source="@Embed('assets/images/light/gripper.png')" mouseDown="resizeHandler();"
+                              buttonMode="true" mouseEnabled="true" useHandCursor="true" />	                    
+                </mx:VBox>
+
+            </mx:HBox>
+        </mx:VBox>
+    </mx:VBox>
+        <mx:VBox id="downloadPane" paddingLeft="-10" includeIn="Full" width="200" height="100%">
+            <mx:Spacer height="20"/>
+            <mx:VBox width="100%" height="100%" styleName="AppUIStyle">
+                <!--mx:List id="FileReceiveList" styleName="fileComboBox"
+                         verticalScrollPolicy="auto" horizontalScrollPolicy="on"
+                         dataProvider="{fileReceiveArrayList}"
+                         width="100%" height="100%" textIndent="10" borderStyle="solid">
+                    <mx:itemRenderer>
+                        <fx:Component>
+                            <mx:Label text="{String(data)}" width="100%" />
+                        </fx:Component>
+                    </mx:itemRenderer>
+                </mx:List>
+                <mx:HBox width="100%">
+                    <mx:Spacer width="100%"/>
+                    <mx:Button id="receiveFileButton" label="Pull" click="receiveFileHandler(event)"/>
+                </mx:HBox-->
+                <mx:HRule width="100%"/>
+                <mx:Text width="100%" textAlign="right" text="This feature is under development! Will be added in future versions." />
+                <mx:List id="FileSendList" styleName="fileComboBox"
+                         verticalScrollPolicy="auto" horizontalScrollPolicy="on"
+                         dataProvider="{fileSendArrayList}"
+                         width="100%" height="100%" textIndent="10" borderStyle="solid">
+                    <mx:itemRenderer>
+                        <fx:Component>
+                            <mx:Label text="{String(data)}" width="100%" />
+                        </fx:Component>
+                    </mx:itemRenderer>
+                </mx:List>
+                <mx:HBox paddingBottom="10" width="100%">
+                    <mx:Spacer width="100%"/>
+                    <mx:Button id="addFileButton" styleName="addUserButton" click="addFile(event);" />
+                    <mx:Button id="removeFileButton" styleName="minimizeButton" click="removeFile(event);" /> 
+                    <mx:Button id="sendFileButton" enabled="false" label="Push"/>
+                </mx:HBox>
+            </mx:VBox>
+            <mx:Spacer height="20"/>
+        </mx:VBox>
+    </mx:HBox>
+    
+</mx:Window>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox xmlns:fx="http://ns.adobe.com/mxml/2009" 
+         xmlns:s="library://ns.adobe.com/flex/spark" 
+         xmlns:mx="library://ns.adobe.com/flex/halo"
+         verticalGap="2" horizontalGap="2" width="100%"
+         creationComplete="onCreationComplete();"
+         verticalScrollPolicy="off">    
+    <fx:Script>
+        <![CDATA[
+            
+            import com.scuttlebutt.model.User;
+            import com.scuttlebutt.utils.AvatarUtil;
+            
+            import flash.display.Bitmap;
+            import flash.events.Event;
+            import flash.text.engine.FontWeight;
+            
+            import mx.core.UIComponent;
+            
+            private var avatar : Bitmap;
+            private  var avatarHolder : UIComponent ;
+            
+            [Bindable(event="dataChange")]
+            private function onCreationComplete() : void
+            {
+                avatar = new Bitmap();
+                avatarHolder = new UIComponent();
+                avatarHolder.addChild(avatar);
+                avatarImage.addChild(avatarHolder);
+                
+                addEventListener( "dataChange", onDataChange );
+                addEventListener(Event.FRAME_CONSTRUCTED, loadAvatar); 
+            }
+            
+            private function onDataChange( evt:Event ) : void
+            {
+                //trace(evt.toString());
+                //trace("[DATA CHANGE] Loading avatar");
+                if(data)
+                    avatar.bitmapData = AvatarUtil.convertStringtoAvatar(data.avatar);
+                
+                this.removeEventListener(Event.FRAME_CONSTRUCTED, onDataChange, false);
+            }
+            
+            private function loadAvatar( evt:Event ) : void
+            {
+                //trace(evt.toString());
+                if(data)
+                {
+                    if(data.avatar)
+                    {
+                        avatar.bitmapData = AvatarUtil.convertStringtoAvatar(data.avatar);
+                        this.removeEventListener(Event.FRAME_CONSTRUCTED, loadAvatar);
+                    }
+
+                }
+                
+                this.removeEventListener(Event.FRAME_CONSTRUCTED, loadAvatar);
+            }
+            
+        ]]>
+    </fx:Script>
+    
+    <mx:VBox styleName="avatarBoxStyle" verticalAlign="middle" horizontalAlign="center">
+        <mx:Image id="avatarImage"  horizontalAlign="center" verticalAlign="middle"
+                  smoothBitmapContent="true" scaleContent="true"
+                  width="48" height="48"/>        
+    </mx:VBox> 
+    
+    <mx:VBox verticalGap="0" horizontalGap="0" 
+         verticalScrollPolicy="auto" width="100%">
+        <!-- [Rohit] Fix this one by spark component RichText and RichEditable text after some R&D -->
+        <!--mx:Text id="userName" text="{data.name}" styleName="chatUserText"/>
+        <mx:Text selectable="false" width="100%" height="100%"
+                     id="userMessage" text="{data.message}" styleName="chatMessageText"/--> 
+        <s:RichEditableText width="100%" editable="false">
+            <s:span color="#111111" fontSize="15" fontWeight="{flash.text.engine.FontWeight.BOLD}" fontFamily="Marker Felt Thin" >{data.name}: </s:span>
+            <s:span color="#000000" fontSize="14" fontFamily="Helvetica Neue Medium">{data.message}</s:span>
+        </s:RichEditableText> 
+        
+        <!--mx:TextArea editable="false" wordWrap="true" contentBackgroundAlpha="0" borderAlpha="0"
+                     selectable="false" width="100%" height="100%" verticalScrollPolicy="off" focusThickness="0"
+                     id="userMessage" text="{data.message}" styleName="chatMessageText"/-->     
+    </mx:VBox>
+</mx:HBox>

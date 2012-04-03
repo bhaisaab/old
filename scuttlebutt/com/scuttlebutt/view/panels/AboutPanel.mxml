@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow         
+    xmlns:fx="http://ns.adobe.com/mxml/2009" 
+    xmlns:s="library://ns.adobe.com/flex/spark" 
+    xmlns:mx="library://ns.adobe.com/flex/halo"          
+    title="About ScuttleButt"
+    showCloseButton="true"
+    close="closeHandler( event );" creationComplete="init();"
+    styleName="aboutBox">
+    
+    <fx:Declarations>
+        <!-- Animates the settings panel, initially brings it into view. //-->
+        <mx:Parallel id="panelTransition" duration="1000">
+            <mx:children>
+                <mx:Fade alphaFrom="0" alphaTo="1" easingFunction="mx.effects.easing.Quadratic.easeOut"/>
+            </mx:children>
+        </mx:Parallel>
+    </fx:Declarations>
+    
+    <fx:Script>
+        <![CDATA[			
+            
+            import com.scuttlebutt.managers.AppManager;
+            
+			import flash.events.ErrorEvent;
+			import flash.events.Event;
+			import flash.events.IOErrorEvent;
+			import flash.net.navigateToURL;
+			
+			import mx.controls.Alert;
+			import mx.core.FlexGlobals;
+			import mx.effects.easing.*;
+			import mx.managers.PopUpManager;
+			
+			private var versionXMLURL:String = "http://scuttlebutt.yorg.in/version.xml";
+			
+			[Bindable]
+			private var version:String="";
+			
+			private var availableVersion:String="";
+			
+			public static function show() : AboutPanel
+            {
+                var panel : AboutPanel = AboutPanel( PopUpManager.createPopUp(
+                    DisplayObject( mx.core.FlexGlobals.topLevelApplication),
+                    AboutPanel, true ) );
+                
+                PopUpManager.centerPopUp(panel);
+                panel.init();   
+                
+                return panel;
+            }
+            
+            private function init() : void
+            {	
+                panelTransition.play( [aboutBox] );
+				
+				var appXML:XML = NativeApplication.nativeApplication.applicationDescriptor;
+				var ns:Namespace = appXML.namespace();
+				version = appXML.ns::version;
+            }
+
+            private function openHelpPages( event : Event ) : void
+            {
+                navigateToURL( new URLRequest( 'docs/index.html' ) );
+                closeHandler( event );   
+            }
+            
+            private function closeHandler( event : Event ) : void
+            {
+                //Alert.show("If you like my work, please consider me for cool internships or donations.\nResume can be downloaded from http://whatifi.undo.it\nThanks!\nRohit Yadav, contact at: rohityadav89@gmail.com", "InternshipWare!");
+                dispatchEvent( new Event(Event.CANCEL) );
+                PopUpManager.removePopUp( this );
+            }
+
+			protected function openAuthorWebsite(event : Event) : void
+			{
+				navigateToURL( new URLRequest( 'http://rohityadav.in/' ) );
+				closeHandler( event ); 
+			}
+			
+			protected function openProjectWebsite(event : Event) : void
+			{
+				navigateToURL( new URLRequest( 'http://scuttlebutt.yorg.in/' ) );
+				closeHandler( event ); 
+			}
+			
+			private function checkForUpdate(event:Event):void 
+			{
+			   AppManager.getInstance().isUserProvoked = true;
+               AppManager.getInstance().preCheckForUpdate(event);  
+			}
+		
+        ]]>
+    </fx:Script>
+
+    <mx:VBox id="aboutBox" styleName="aboutBox" width="100%" height="100%"
+             verticalGap="0" horizontalAlign="center">
+		<mx:HBox width="100%">
+			<mx:Spacer width="100%"/>
+			<mx:Image source="@Embed('assets/images/yorg.png')"/>
+		</mx:HBox>
+        <mx:Image source="@Embed('assets/images/about.png')" horizontalAlign="center" />
+        <mx:Text text="{'ScuttleButt v' + version }" selectable="false" styleName="aboutAppName" />
+        <mx:Text text="&lt;Gossip the Rumor!/&gt;" selectable="false" styleName="aboutPunchLine" />
+        <mx:Text text="Instant Messenger for Local Networks" selectable="false" styleName="aboutDescription" />
+		<mx:LinkButton enabled="true" label="© Rohit Yadav, Yorg Inc. 2009-2010" styleName="aboutWebsite" click="openAuthorWebsite(event);"/>
+		<mx:LinkButton enabled="true" label="http://scuttlebutt.yorg.in/" styleName="aboutWebsite" click="openProjectWebsite(event);"/>
+        
+        <mx:HBox paddingTop="10">
+            <mx:Button id="helpButton" label="Help" click="openHelpPages(event);"/>
+            <mx:Button id="updateButton" label="Check for Updates" click="checkForUpdate(event);" />
+            <mx:Button id="cancelButton" label="Cancel" click="closeHandler(event)"/>
+        </mx:HBox>
+        
+    </mx:VBox>
+    
+</mx:TitleWindow>
+
+

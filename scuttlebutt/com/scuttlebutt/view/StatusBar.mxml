@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox xmlns:fx="http://ns.adobe.com/mxml/2009" 
+         xmlns:s="library://ns.adobe.com/flex/spark" 
+         xmlns:mx="library://ns.adobe.com/flex/halo"
+         verticalAlign="middle" initialize="onInit(event);">
+    
+    <fx:Script>
+        <![CDATA[
+            import com.scuttlebutt.managers.AppManager;
+            import com.scuttlebutt.view.panels.AddUsersPanel;
+            import com.scuttlebutt.view.panels.AboutPanel;
+            
+            import flash.events.MouseEvent;
+            
+            [Bindable]
+            public var _totalUsers : int = 0;
+            
+            
+            private function onInit(event : Event) : void
+            {
+                AppManager.getInstance()._statusBar = this;
+            }
+            
+            private function onResize() : void
+            {
+                this.stage.nativeWindow.startResize(NativeWindowResize.BOTTOM_RIGHT);
+            }
+
+            private function addIPHandler( event : MouseEvent ) : void
+            {
+                var addUsersPanel : AddUsersPanel;
+                addUsersPanel = AddUsersPanel.show();
+            }
+            
+            private function onAboutButtonClick( event : MouseEvent ) : void
+            {
+                var aboutPanel : AboutPanel;
+                aboutPanel = AboutPanel.show();
+            }
+
+
+            protected function beatWidgetClickHandler(event:MouseEvent):void
+            {
+                AppManager.getInstance().showVoiceChatWindow();
+            }
+
+        ]]>
+    </fx:Script>
+
+    <mx:Button styleName="addUserButton" toolTip="Add Specific IP/Broadcast addresses" click="addIPHandler(event);"/>	
+    <mx:Button styleName="aboutButton" toolTip="Help/About ScuttleButt" click="onAboutButtonClick(event);" />	
+    <mx:SWFLoader source="@Embed('assets/beatwidget.swf')" width="20" height="20" click="beatWidgetClickHandler(event)"/>
+    <mx:Text width="100%" text="© Rohit Yadav, 2009-2010" selectable="false" 
+              styleName="statusBarErrorMessageStyle" textAlign="center"/>
+    
+    <mx:HBox horizontalGap="0">
+        <mx:Label text="{_totalUsers}" styleName="statusBarUsersCount" />
+        <mx:Label text="Users" styleName="statusBarUsersText" />	        
+    </mx:HBox>
+
+    <mx:VBox>
+        <mx:Spacer height="100%"/>
+        <mx:Image source="@Embed('assets/images/light/gripper.png')" mouseDown="onResize();"
+                  buttonMode="true" mouseEnabled="true" useHandCursor="true" />	        
+    </mx:VBox>
+
+</mx:HBox>

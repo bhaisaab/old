@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:fx="http://ns.adobe.com/mxml/2009" 
+         xmlns:s="library://ns.adobe.com/flex/spark" 
+         xmlns:mx="library://ns.adobe.com/flex/halo"
+         xmlns:ui="com.scuttlebutt.view.*" 
+         xmlns:panels="com.scuttlebutt.view.panels.*"
+         xmlns:controls="com.scuttlebutt.controls.*"
+         horizontalScrollPolicy="off" verticalScrollPolicy="off"
+         creationComplete="onCreationComplete();" >
+    
+    <fx:Script>
+        <![CDATA[
+            import com.scuttlebutt.managers.*;
+            import com.scuttlebutt.model.User;
+            import com.scuttlebutt.view.renderers.UserListRenderer;
+            
+            import flash.events.MouseEvent;
+            
+            import mx.collections.ArrayList;
+            
+            [Bindable]
+            public var searchResult : ArrayList;
+            
+            private function onCreationComplete()  : void
+            {
+                searchResult = new ArrayList;
+                trace("[Search Config] Search by: Name, group, location, status message, ip");
+            }
+            
+            /** This is a selection event from the search tool. **/
+            private function onSearchInputChange() : void
+            {
+                if(searchResult.length)
+                    searchResult.removeAll();
+                
+                var query : String = searchInput.text;
+                
+                if( !query )
+                {
+                    trace("[Search End] Display User List");
+                    UsersList.dataProvider = UsersManager.getInstance().userList;
+                    return;
+                }
+                else
+                {
+                    trace("[Search] " + query);
+                    var temp : User = null;
+                    for( var i : int = 0; i < UsersManager.getInstance().userList.length; i++ )
+                    {
+                        temp = UsersManager.getInstance().userList.getItemAt(i) as User;
+                        //By Name
+                        if( temp.name.search(query) != -1  )
+                            searchResult.addItem(temp);
+                        else
+                        {
+                            //By Group
+                            if( temp.group.search(query) != -1  )
+                                searchResult.addItem(temp);
+                            else
+                            {
+                                //By Location
+                                if( temp.location.search(query) != -1  )
+                                    searchResult.addItem(temp);
+                                else
+                                {
+                                    //Status Message
+                                    if( temp.statusMessage.search(query) != -1  )
+                                        searchResult.addItem(temp);
+                                    else
+                                        //By IP
+                                        if( temp.ip.search(query) != -1  )
+                                            searchResult.addItem(temp);
+                                }
+                            }
+                        }
+                    }
+                    UsersList.dataProvider = searchResult;
+                }
+            }
+            
+            protected function refreshHandler(event:MouseEvent):void
+            {
+                AppManager.getInstance().refreshUserList();
+            }
+            
+        ]]>
+    </fx:Script>
+    
+    <!-- Search Component -->
+    <mx:HBox width="100%">
+        <mx:HBox width="100%" styleName="searchBoxStyle" horizontalGap="0">
+            <mx:VBox horizontalAlign="center" verticalAlign="middle" paddingLeft="5" paddingRight="3" paddingTop="8">
+                <mx:Button styleName="searchButton" click="onSearchInputChange();"/>
+            </mx:VBox>
+            <mx:TextInput id="searchInput" width="100%" styleName="searchInputTextBox"
+                          text="Search" maxChars="32" toolTip="Search is case sensitive"
+                          change="onSearchInputChange();"/>    
+        </mx:HBox>
+        <mx:Button styleName="refreshButton" toolTip="Refresh User List" click="refreshHandler(event)"/>
+    </mx:HBox>	
+
+    <mx:List id="UsersList" width="100%" height="100%"
+             styleName="userListBoxStyle" verticalScrollPolicy="auto"
+             dataProvider="{UsersManager.getInstance().userList}"
+             itemRenderer="com.scuttlebutt.view.renderers.UserListRenderer" /> 
+            
+</mx:VBox>

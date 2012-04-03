@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Window xmlns:fx="http://ns.adobe.com/mxml/2009" 
+           xmlns:s="library://ns.adobe.com/flex/spark" 
+           xmlns:mx="library://ns.adobe.com/flex/halo"
+           xmlns:view="com.scuttlebutt.view.*" 
+           styleName="AppStyle" width="100%" height="100%" minWidth="360" minHeight="240"
+           initialize="onInit(event);"
+           creationComplete="onComplete(event);" >
+    
+    <fx:Script>
+        <![CDATA[
+            import com.scuttlebutt.managers.AppManager;
+            
+            import flash.events.MouseEvent;
+            
+            import mx.controls.Alert;
+            
+            public var userChoice:Boolean = false;
+
+            private function onInit( event:Event ) : void
+            {
+                this.showTitleBar = false;
+                this.showStatusBar = false;
+                this.showGripper = false;
+                this.title = "ScuttleButt Updater";
+                this.systemChrome =  NativeWindowSystemChrome.NONE;
+                this.transparent = true;
+                this.resizable = true;
+                
+                windowTitleBar.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDownHandler);
+            }
+            
+            private function onComplete( event : Event ) : void
+            {
+                stage.nativeWindow.addEventListener(Event.CLOSE, closeHandler );
+            }
+            
+            private function onMouseDownHandler( event : MouseEvent ) : void
+            {
+                this.stage.nativeWindow.startMove();
+            }
+            
+            private function minimizeHandler( event : Event = null ) : void
+            {
+                this.stage.nativeWindow.minimize();
+            }
+            
+            private function closeHandler( event : Event = null ) : void
+            {   
+                this.visible = false;
+            }
+            
+            private function resizeHandler() : void
+            {
+                this.stage.nativeWindow.startResize(NativeWindowResize.BOTTOM_RIGHT);
+            }
+            
+            public function setVisibility( val : Boolean = true ) : void
+            {
+                this.visible = val;
+            }
+            
+            public function newUpdate(str:String, ver:String) : void
+            {
+                updateInfo.text = str;
+                versionInfo.text = "Update Version: " + ver;
+                this.visible = true;
+            }
+            
+
+            protected function okClickHandler(event:MouseEvent):void
+            {
+                this.cancel.enabled = false;
+                this.userChoice = true;
+                AppManager.getInstance().startUpdate();
+            }
+
+            protected function cancelClickHandler(event:MouseEvent=null):void
+            {
+                this.visible = false;
+                AppManager.getInstance().cancelUpdate();
+            }
+            
+            public function progressValue(val:Number):void
+            {
+                this.updateProgress.setProgress(val, 100);
+                this.updateProgress.label = "Downloading " + val + "%";
+                if(val == 100)
+                    versionInfo.text = "Launching Installer | " + versionInfo.text;
+            }
+
+        ]]>
+    </fx:Script>
+    
+    <mx:VBox id="windowPane" width="100%" height="100%" styleName="AppUIStyle">
+        <mx:HBox id="windowTitleBar" styleName="titleBarStyle" width="100%">
+            <mx:Image  source="@Embed('assets/images/light/icon-small.png')"/>
+            <mx:Label styleName="windowTitle" text="Update Found!"/>
+            <mx:Spacer width="100%"/>     
+            <mx:Button styleName="minimizeButton" toolTip="Minimize" click="minimizeHandler();"/>		
+            <mx:Button styleName="closeButton" toolTip="Close" click="closeHandler();"/>
+        </mx:HBox>     
+        
+        <mx:VBox width="100%" height="100%">
+            <s:RichText id="versionInfo" text="Version x.x.x" width="100%" height="100%"/>
+            <s:RichText id="updateInfo" text="ScuttleButt Updater" width="100%" height="100%"/>
+            <mx:ProgressBar id="updateProgress" mode="manual" color="0x555555" chromeColor="0xE44972" labelPlacement="bottom" minimum="0" maximum="100" width="100%"/>
+            <mx:HBox width="100%">
+                <mx:Spacer width="100%"/>
+                <mx:Button label="Update" click="okClickHandler(event)"/> 
+                <mx:Button id="cancel" label="Cancel" click="cancelClickHandler(event)"/> 
+            </mx:HBox>
+        </mx:VBox>
+
+        <mx:HBox width="100%" paddingBottom="6">
+            <mx:Spacer width="100%"/>
+            <mx:Image source="@Embed('assets/images/light/gripper.png')" mouseDown="resizeHandler();"
+                      buttonMode="true" mouseEnabled="true" useHandCursor="true" />	                    
+        </mx:HBox>
+    </mx:VBox>
+</mx:Window>
+

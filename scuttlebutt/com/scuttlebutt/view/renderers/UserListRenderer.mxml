@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox  xmlns:fx="http://ns.adobe.com/mxml/2009" 
+          xmlns:s="library://ns.adobe.com/flex/spark" 
+          xmlns:mx="library://ns.adobe.com/flex/halo" 
+          horizontalAlign="left" verticalAlign="middle" 
+          verticalScrollPolicy="off" horizontalScrollPolicy="off" height="100%" 
+          creationComplete="onCreationComplete();"  showEffect="{ coolFade }" 
+          doubleClick="onDoubleClick(event)" doubleClickEnabled="true">
+    
+    <fx:Script>
+        <![CDATA[
+            import com.scuttlebutt.managers.WindowManager;
+            import com.scuttlebutt.model.User;
+            import com.scuttlebutt.utils.AvatarUtil;
+            import com.scuttlebutt.managers.AppManager;
+            
+            import flash.display.Bitmap;
+            import flash.events.Event;
+            
+            import mx.core.UIComponent;
+            
+            private var avatar : Bitmap;
+            private  var avatarHolder : UIComponent ;
+        
+            [Bindable(event="dataChange")]
+        
+            public function get user() : User
+            {
+                return data as User;
+            }
+
+            private function onCreationComplete() : void
+            {
+                //trace("[NEW USER ITEM MADE]");
+                avatar = new Bitmap();
+                avatarHolder = new UIComponent();
+                avatarHolder.addChild(avatar);
+                avatarImage.addChild(avatarHolder);
+                
+                addEventListener( "dataChange", onDataChange );
+                addEventListener(Event.FRAME_CONSTRUCTED, loadAvatar);
+                
+            }
+            
+            private function onDataChange( evt:Event ) : void
+            {
+                //trace(evt.toString());
+                WindowManager.getInstance().updateChatWindow(data as User);
+                //trace("[DATA CHANGE] Loading avatar");
+                if(data)
+                    avatar.bitmapData = AvatarUtil.convertStringtoAvatar(data.avatar);
+                
+                this.removeEventListener(Event.FRAME_CONSTRUCTED, onDataChange, false);
+            }
+            
+            private function loadAvatar( evt:Event ) : void
+            {
+                //trace(evt.toString());
+                WindowManager.getInstance().updateChatWindow(data as User);
+                //trace("[Loading avatar]");
+                if(data)
+                    avatar.bitmapData = AvatarUtil.convertStringtoAvatar(data.avatar);
+                
+                this.removeEventListener(Event.FRAME_CONSTRUCTED, loadAvatar, false);
+            }
+            
+            private function onDoubleClick(event:Event=null) : void
+            {
+                if(avatar)
+                    avatar.bitmapData = AvatarUtil.convertStringtoAvatar(data.avatar);
+                
+                WindowManager.getInstance().openChatWindow(data as User);
+            }
+        
+        ]]>
+    </fx:Script>
+    <fx:Declarations>
+        <mx:Fade alphaFrom="0.2" alphaTo="1" duration="100" id="coolFade" />        
+    </fx:Declarations>
+    
+    <mx:VBox styleName="avatarBoxStyle" verticalAlign="middle" horizontalAlign="center">
+        <mx:Image id="avatarImage" horizontalAlign="left" verticalAlign="middle"  
+                  width="48" height="48" scaleContent="true" smoothBitmapContent="true" />        
+    </mx:VBox> 
+    
+    <mx:VBox verticalGap="0" horizontalGap="0" width="100%" backgroundAlpha="0">
+        <mx:HBox verticalGap="0" horizontalGap="0"  backgroundAlpha="0"
+                 verticalAlign="bottom" width="100%">
+            <mx:Label text="{data.name}" toolTip="{User(data).name}" styleName="nameUserInfo" />
+            <mx:Label width="100%" text="{data.ip} | {data.group}" toolTip="{data.ip} | {data.group}" styleName="ipUserInfo"/>  
+        </mx:HBox>
+        <mx:Text text="{User(data).statusMessage.slice(0,36)}..." toolTip="{User(data).statusMessage}" styleName="messageUserInfo" />
+    </mx:VBox>
+    <mx:Spacer width="100%"/>
+    <mx:VBox height="100%" verticalAlign="bottom" horizontalAlign="center" verticalGap="2" paddingRight="5" backgroundAlpha="0">
+        <mx:Spacer height="100%"/>
+        <mx:Image id="statusImage" horizontalAlign="center" verticalAlign="middle" smoothBitmapContent="true" 
+                  source="assets/images/{data.status}.png" /> 
+        <mx:Spacer height="100%"/>
+        <mx:HBox horizontalGap="4" verticalGap="0" paddingBottom="2">
+            <mx:Button styleName="chatButton" toolTip="Chat" click="onDoubleClick();"/>
+            <mx:Button styleName="callButton" toolTip="Call" click="AppManager.getInstance().showVoiceChatWindow(User(data));"/>
+        </mx:HBox>
+    </mx:VBox>
+    
+</mx:HBox>

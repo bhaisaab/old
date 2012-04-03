@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow         
+    xmlns:fx="http://ns.adobe.com/mxml/2009" 
+    xmlns:s="library://ns.adobe.com/flex/spark" 
+    xmlns:mx="library://ns.adobe.com/flex/halo"          
+    title="ScB IPs: Add Peer IPs"
+    showCloseButton="true"
+    close="closeHandler( event );" creationComplete="init();"
+    styleName="settingsBox">
+    
+    <fx:Declarations>
+        <!-- Animates the settings panel, initially brings it into view. //-->
+        <mx:Parallel id="panelTransition" duration="500">
+            <mx:children>
+                <mx:Move yFrom="{this.height * -1}" yTo="10" easingFunction="mx.effects.easing.Quadratic.easeOut"/>
+                <mx:Fade alphaFrom="0" alphaTo="1" easingFunction="mx.effects.easing.Quadratic.easeOut"/>
+            </mx:children>
+        </mx:Parallel>
+    </fx:Declarations>
+    
+    <fx:Script>
+        <![CDATA[
+            import com.scuttlebutt.events.XMLFileServiceEvent;
+            import com.scuttlebutt.managers.*;
+            import com.scuttlebutt.services.XMLFileService;
+            import com.scuttlebutt.utils.XMLParserUtil;
+            
+            import flash.events.Event;
+            
+            import mx.collections.ArrayList;
+            import mx.core.FlexGlobals;
+            import mx.managers.PopUpManager;
+            import mx.effects.easing.Quadratic;
+            
+            private static const SETTINGS_CHANGE : String = "settingsChange";
+            
+            [Bindable]
+            private var ipArrayList:ArrayList;
+            
+            public static function show() : AddUsersPanel
+            {
+                var panel : AddUsersPanel = AddUsersPanel( PopUpManager.createPopUp(
+                    DisplayObject( mx.core.FlexGlobals.topLevelApplication),
+                    AddUsersPanel, true ) );
+                
+                PopUpManager.centerPopUp(panel);
+                panel.init();   
+                
+                return panel;
+            }
+            
+            private function init() : void
+            {	
+                panelTransition.play( [addIPBox] );
+                ipInput.setFocus();
+                ipArrayList = new ArrayList;
+                
+                for(var i:int ; i<AppManager.getInstance().settings._ipList.length; i++)
+                    ipArrayList.addItemAt(AppManager.getInstance().settings._ipList[i], i);
+
+            }
+            
+            private function addHandler( event : Event ) : void
+            {   
+                ipArrayList.addItem(ipInput.text.toString());
+            }
+            
+            //Fix it!
+            private function removeHandler( event : Event ) : void
+            {   
+                if(IPList.selectedIndex > -1)
+                    ipArrayList.removeItemAt(IPList.selectedIndex);
+            }
+            
+            private function okHandler( event : Event ) : void
+            {
+                while(AppManager.getInstance().settings._ipList.length)
+                    AppManager.getInstance().settings._ipList.pop();
+                
+                for(var i:int=0; i < ipArrayList.length; i++)
+                    AppManager.getInstance().settings._ipList.push(ipArrayList.getItemAt(i,0));
+                
+                var fileService : XMLFileService = new XMLFileService();
+                fileService.addEventListener( XMLFileServiceEvent.XML_FILE_WRITTEN , fileWrittenHandler );
+                fileService.saveXMLFileToStorage( AppManager.getInstance().settingFileLocation, XMLParserUtil.buildSettingsXML() );  
+            }
+            
+            private function closeHandler( event : Event ) : void
+            {
+                dispatchEvent( new Event(Event.CANCEL) );
+                PopUpManager.removePopUp( this );
+            }
+            
+            private function fileWrittenHandler( event : Event ) : void
+            {
+                //Dispatch event for Object to know the change
+                dispatchEvent( new Event(AddUsersPanel.SETTINGS_CHANGE) );
+                closeHandler( null );
+            }
+            
+        ]]>
+    </fx:Script>
+    
+    <!-- The add IP panel //-->
+    <mx:VBox id="addIPBox" styleName="settingsBox" width="100%" height="100%">
+        <mx:HBox width="100%" height="100%">
+            <mx:List id="IPList" styleName="settingsComboBox" verticalScrollPolicy="auto"
+                     dataProvider="{ipArrayList}"
+                     width="50%" height="100%" textIndent="10" borderStyle="solid">
+                <mx:itemRenderer>
+                    <fx:Component>
+                        <mx:Label styleName="settingsLabel" text="{data.toString()}" width="100%" />
+                    </fx:Component>
+                </mx:itemRenderer>
+            </mx:List>
+            <mx:VBox width="50%">
+                <mx:TextInput id="ipInput" toolTip="Input in -.-.-.- Format" width="100%" text="0.0.0.0" styleName="settingsTextInput" maxChars="15"/>
+                <mx:Button label="+" toolTip="Add IP/Broadcast address" click="addHandler(event)"/>
+                <mx:Button label="-" toolTip="Remove selected IP from the list." click="removeHandler(event);"/>
+            </mx:VBox>
+        </mx:HBox>
+
+        
+        <mx:HBox>
+            <mx:Button id="okButton" label="OK »" click="okHandler(event)"/>
+            <mx:Button id="cancelButton" label="Cancel" click="closeHandler(event)"/>
+        </mx:HBox>
+        
+    </mx:VBox>
+    <!-- End the add ip panel //-->
+    
+    
+</mx:TitleWindow>
+
+

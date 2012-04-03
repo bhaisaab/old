@@ -1,0 +1,514 @@
+@namespace s "library://ns.adobe.com/flex/spark";
+@namespace mx "library://ns.adobe.com/flex/halo";
+
+@font-face {
+    src:url("../fonts.swf"); 
+    fontFamily: "Marker Felt Thin";
+}
+
+@font-face {
+    src:url("../fonts.swf"); 
+    fontFamily: "Arial Black";
+}
+
+@font-face {
+    src:url("../fonts.swf"); 
+    fontFamily: "Helvetica Neue Medium";
+}
+
+@font-face {
+    src:url("../fonts.swf"); 
+    fontFamily: "Futura Medium";
+}
+
+/*
+* Container Styles Starts here:
+*/
+
+.AppStyle
+{
+    padding-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    corner-radius: 8;
+    background-color: #000000;
+    backgroundAlpha: 0;
+    border-style: none;
+}
+
+
+.AppUIStyle
+{
+    padding-left: 5;
+    padding-top: 5;
+    padding-right: 5;
+    padding-bottom: 0;
+    corner-radius: 8;
+    background-color: #FFFFFF;
+    border-color: #000000;
+    border-style: solid;
+    border-thickness: 1;
+}
+
+.titleBarStyle
+{
+    padding-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    background-color: #FFFFFF;
+}
+
+.listPanelStyle
+{
+    padding-top: 0;
+    padding-left: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+}
+
+.statusBarStyle
+{
+    fontFamily: "Marker Felt Thin";
+    padding-top: 0;
+    padding-left: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+}
+
+.commonBoxStyle
+{
+    padding-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    background-color: #EEEEEE;
+    border-color: #000000;
+    border-style: solid;
+    border-thickness: 0;
+    corner-radius: 6;
+}
+
+.avatarBoxStyle
+{
+    padding-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    border-color: #999999;
+    border-style: solid;
+    border-thickness: 0;
+}
+
+.transparentBoxStyle
+{
+    padding-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    border-style: none;
+}
+
+.transparentBoxWithBorderStyle
+{
+    padding-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    border-style: solid;
+    border-color: #000000;
+    border-thickness: 0;
+    corner-radius: 6;
+}
+
+.searchBoxStyle
+{
+    padding-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    background-color: #999999;
+    border-color: #000000;
+    border-style: none;
+    border-thickness: 0;
+    corner-radius: 8;
+}
+
+/*
+* Container Styles Ends
+*/
+
+/*
+*  User ListPanel styles start here
+*/
+
+.searchInputTextBox
+{
+    fontFamily: "Marker Felt Thin";
+    font-size: 16;
+    focusColor: #E44972;
+    
+    /*Color of the text */
+    color: #000000;
+    contentBackgroundColor: #DDDDDD;
+
+    border-color: #000000;
+    border-thickness: 0;
+    border-style: solid;
+    border-alpha: 0;
+    
+    corner-radius: 8;
+    padding-right: 5;
+    padding-left: 5;
+    padding-top: 5;
+    padding-bottom: 5;
+}
+
+.userListBoxStyle
+{
+    background-color: #DDDDDD;
+    background-disabled-color: #AAAAAA;
+    alternating-item-colors: #FAFAFA, #F2F2F2;
+    roll-over-color: #FE92B3;
+    text-roll-over-color: #AAAAAA;
+    disabled-color: #AAAAAA;
+    selection-color: #FEABC5; /*#FE81A7 Light Pink*/
+    text-selected-color: #AAAAAA;
+    border-color: #CCCCCC;
+    border-style: solid;
+}
+
+.nameUserInfo
+{
+    font-size: 16;
+    fontFamily: "Marker Felt Thin";
+    color: #000000;
+}
+
+.ipUserInfo
+{
+    font-size: 14;
+    fontFamily: "Helvetica Neue Medium";
+    color: #333333;
+}
+
+.messageUserInfo
+{
+    font-size: 12;
+    fontFamily: "Helvetica Neue Medium";
+    color: #666666;
+}
+
+/*
+*  User ListPanel styles ends
+*/
+
+
+/*
+* All Button Styles Starts here:
+*/
+
+.closeButton
+{
+    up-skin: Embed("../images/light/close-window.png");
+    down-skin: Embed("../images/light/close-window-down.png");
+    over-skin: Embed("../images/light/close-window-over.png");
+}
+
+.minimizeButton
+{
+    up-skin: Embed("../images/light/minimize-window.png");
+    down-skin: Embed("../images/light/minimize-window-down.png");
+    over-skin: Embed("../images/light/minimize-window-over.png");
+}
+
+.settingsButton
+{
+    up-skin: Embed("../images/light/settings.png");
+    down-skin: Embed("../images/light/settings-down.png");
+    over-skin: Embed("../images/light/settings-over.png");
+}
+
+.chatButton
+{
+    up-skin: Embed("../images/light/chat.png");
+    down-skin: Embed("../images/light/chat-down.png");
+    over-skin: Embed("../images/light/chat-over.png");
+}
+
+.downloadButton
+{
+    up-skin: Embed("../images/light/download.png");
+    down-skin: Embed("../images/light/download-down.png");
+    over-skin: Embed("../images/light/download-over.png");    
+}
+
+.callButton
+{
+    up-skin: Embed("../images/light/call.png");
+    down-skin: Embed("../images/light/call-down.png");
+    over-skin: Embed("../images/light/call-over.png");
+}
+
+.searchButton
+{
+    up-skin: Embed("../images/light/search.png");
+    down-skin: Embed("../images/light/search.png");
+    over-skin: Embed("../images/light/search-over.png");
+}
+
+.refreshButton
+{
+    up-skin: Embed("../images/light/refresh.png");
+    down-skin: Embed("../images/light/refresh-down.png");
+    over-skin: Embed("../images/light/refresh-over.png");  
+}
+
+.addUserButton
+{
+    up-skin: Embed("../images/light/adduser.png");
+    down-skin: Embed("../images/light/adduser-down.png");
+    over-skin: Embed("../images/light/adduser-over.png");  
+}
+
+.aboutButton
+{
+    up-skin: Embed("../images/light/about.png");
+    down-skin: Embed("../images/light/about-down.png");
+    over-skin: Embed("../images/light/about-over.png");  
+}
+
+/*
+* All Button Styles ends
+*/
+
+/*
+* Status bar Text Styles starts:
+*/
+
+.statusBarMessageStyle
+{
+    fontFamily: "Marker Felt Thin";
+    font-size: 15;
+    color: #666666;
+}
+
+.statusBarErrorMessageStyle
+{
+    fontFamily: "Marker Felt Thin";
+    font-size: 12;
+    color: #666666;
+}
+
+.statusBarUsersCount
+{
+    fontFamily: "Marker Felt Thin";
+    font-size: 15;
+    color: #000000;
+}
+
+.statusBarUsersText
+{
+    fontFamily: "Marker Felt Thin";
+    font-size: 15;
+    color: #E44972;
+}
+
+/*
+* Status bar Text Styles starts:
+*/
+
+/*
+* General Window Styles
+*/
+
+.windowTitle
+{
+    font-size: 16;
+    fontFamily: "Marker Felt Thin";
+    color: #000000;
+}
+
+.chatMsgListStyle
+{
+    background-color: #DDDDDD;
+    background-disabled-color: #AAAAAA;
+    alternating-item-colors: #FAFAFA, #F2F2F2;
+    roll-over-color: #FE92B3;
+    text-roll-over-color: #AAAAAA;
+    disabled-color: #AAAAAA;
+    selection-color: #FEABC5; /*#FE81A7 Light Pink*/
+    text-selected-color: #AAAAAA;
+    border-color: #CCCCCC;
+    border-style: solid;
+}
+
+.chatUserText
+{
+    font-family: "Marker Felt Thin";
+    font-size: 14;
+    color: #111111;	
+}
+
+.chatMessageText 
+{
+    font-family: "Helvetica Neue Medium";
+    font-size: 13;
+    color: #000000;	
+}
+
+.textUpdateTextInput 
+{
+    fontFamily: "Marker Felt Thin";
+    font-size: 18;
+    focusColor: #E44972;
+    border-thickness: 0;
+    border-style: solid;
+    border-alpha: 1;
+    border-color: #CCCCCC;
+    contentBackgroundColor: #EEEEEE;
+    color: #000000;
+    padding-right: 5;
+    padding-left: 5;
+    padding-top: 5;
+    padding-bottom: 2;
+}
+
+.fileComboBox
+{
+    color: #000000;
+    
+    background-color: #DDDDDD;
+    background-disabled-color: #666666;
+    alternating-item-colors: #FAFAFA, #F2F2F2;
+    roll-over-color: #FE92B3;
+    text-roll-over-color: #333333;
+    disabled-color: #AAAAAA;
+    selection-color: #FEABC5; /*#FE81A7 Light Pink*/
+    text-selected-color: #333333;
+    border-color: #CCCCCC;
+    border-style: solid;
+}
+
+/*
+* Chat and window styles end here
+*/
+
+
+/*
+* Settings Style
+*/
+
+.settingsBox, .aboutBox
+{
+    padding-top: 10;
+    padding-left: 10;
+    padding-right: 10;
+    padding-bottom: 10;
+    background-color: #F8F8F8;
+    border-style: solid;
+    border-thickness: 0;
+    corner-radius: 6;
+}
+
+.settingsTitle {
+    fontFamily: "Marker Felt Thin";
+    font-size: 13;
+    color: #000000;
+    padding-left: 17;
+    padding-top: 5;
+} 
+
+.settingsForm {
+    padding-top: 0;	
+}
+
+.settingsTextInput 
+{
+    fontFamily: "Marker Felt Thin";
+    font-size: 16;
+    focusColor: #E44972;
+    border-style: solid;
+    border-thickness: 0;
+    border-color: #CCCCCC;
+    corner-radius: 6;
+    color: #000000;
+    contentBackgroundColor: #EEEEEE;
+}
+
+.avatarLabel {
+    font-size: 12;
+    fontFamily: "Helvetica Neue Medium";
+    color: #333333;
+    text-roll-over-color: #000000;
+    text-selected-color: #000000; 
+}
+
+.settingsLabel {
+    font-size: 13;
+    fontFamily: "Helvetuca Neue Medium";
+    color: #111111;
+    text-roll-over-color: #000000;
+    text-selected-color: #000000; 
+}
+
+.settingsComboBox
+{
+    fontFamily: "Marker Felt Thin";
+    font-size: 16;
+    color: #000000;
+    
+    background-color: #DDDDDD;
+    background-disabled-color: #666666;
+    alternating-item-colors: #FAFAFA, #F2F2F2;
+    roll-over-color: #FE92B3;
+    text-roll-over-color: #333333;
+    disabled-color: #AAAAAA;
+    selection-color: #FEABC5; /*#FE81A7 Light Pink*/
+    text-selected-color: #333333;
+    border-color: #CCCCCC;
+    border-style: solid;
+}
+
+/*
+* Settings Panel Style ends
+*/
+
+/*
+* About Panel
+*/
+.aboutAppName 
+{
+    fontFamily: "Marker Felt Thin";
+    font-size: 28;
+    color: #000000;
+} 
+
+.aboutPunchLine 
+{
+    fontFamily: "Marker Felt Thin";
+    font-size: 14;
+    color: #E44972;
+}
+
+.aboutDescription
+{
+    fontFamily: "Futura Medium";
+    font-size: 14;
+    color: #222222;
+}
+
+.aboutCopyright
+{
+    fontFamily: "Futura Medium";
+    font-size: 13;
+    color: #444444;
+}
+
+.aboutWebsite
+{
+    fontFamily: "Futura Medium";
+    font-size: 12;
+    color: #333333;
+} 

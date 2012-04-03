@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow         
+    xmlns:fx="http://ns.adobe.com/mxml/2009" 
+    xmlns:s="library://ns.adobe.com/flex/spark" 
+    xmlns:mx="library://ns.adobe.com/flex/halo"          
+    title="Settings"
+    showCloseButton="true" initialize="init()"
+    close="closeHandler( event );" creationComplete="complete();"
+    styleName="settingsBox">
+    
+    <fx:Declarations>
+        <!-- Animates the settings panel, initially brings it into view. //-->
+        <mx:Parallel id="settingsTransition" duration="500">
+            <mx:children>
+                <mx:Move yFrom="{this.height * -1}" yTo="10" easingFunction="{mx.effects.easing.Quadratic.easeOut}"/>
+                <mx:Fade alphaFrom="0" alphaTo="1" easingFunction="{mx.effects.easing.Quadratic.easeOut}"/>
+            </mx:children>
+        </mx:Parallel>
+    </fx:Declarations>
+    
+    <fx:Script>
+        <![CDATA[
+            import com.scuttlebutt.events.XMLFileServiceEvent;
+            import com.scuttlebutt.managers.*;
+            import com.scuttlebutt.model.User;
+            import com.scuttlebutt.services.XMLFileService;
+            import com.scuttlebutt.utils.*;
+            
+            import flash.display.Bitmap;
+            import flash.display.DisplayObject;
+            import flash.display.Loader;
+            import flash.events.Event;
+            import flash.events.IOErrorEvent;
+            import flash.net.URLRequest;
+            
+            import mx.collections.ArrayCollection;
+            import mx.controls.Alert;
+            import mx.core.UIComponent;
+            import mx.effects.easing.Quadratic;
+            import mx.managers.PopUpManager;
+            
+            public static const SETTINGS_CHANGE : String = "settingsChange";
+            private static const IMG_FILTER : FileFilter = 
+                new FileFilter( "Images(JPEG, JPG, PNG)", "*.jpg;*.jpeg;*.png" );
+   
+            private var _file : File;  
+            private var _loader : Loader;
+            
+            private var _filter : RegExp = /^\S+\.(jpg|jpeg|png)$/i;
+            private var avatarBitmap : Bitmap;
+            private var avatarHolder : UIComponent;
+            
+            [Bindable] private var _user : User;
+            [Bindable] private var _statusIndex : int;
+            [Bindable] private var _notificationBoolean : Boolean;
+            
+            [Bindable]
+            public var userstatus:ArrayCollection = new ArrayCollection(
+                [ 
+                    {label:"Available", data:0}, 
+                    {label:"Busy", data:1},
+                    {label:"Away", data:2},
+                    {label:"Idle", data:3}
+                ]);
+        
+            public static function show() : SettingsPanel
+            {
+                var panel : SettingsPanel = SettingsPanel( PopUpManager.createPopUp(
+                    DisplayObject( mx.core.FlexGlobals.topLevelApplication),
+                    SettingsPanel, true ) );
+        
+                PopUpManager.centerPopUp(panel);
+                panel.init();   
+        
+                return panel;
+            }
+            
+            private function complete() : void
+            {
+                settingsTransition.play( [settingsBox] );
+            }
+        
+            private function init() : void
+            {	
+                notificationCheckBox.selected = AppManager.getInstance().settings._notification;
+                
+                _file = new File();
+                _user = AppManager.getInstance().settings._user;
+                _statusIndex = _user.status;
+
+                _loader = new Loader();
+                _loader.contentLoaderInfo.addEventListener( Event.COMPLETE,
+                    onLoadComplete );
+                _loader.contentLoaderInfo.addEventListener( IOErrorEvent.IO_ERROR,
+                    onLoadError );
+                
+                //Code to init avatarBitmap
+                avatarBitmap = new Bitmap(null, "auto", true);
+                
+                if( _user.avatar != "" )
+                    avatarBitmap.bitmapData = AvatarUtil.convertStringtoAvatar(_user.avatar);
+                
+                avatarHolder = new UIComponent();
+                avatarHolder.addChild(avatarBitmap);
+                
+                avatarImage.addChild(avatarHolder);
+            }
+        
+            private function browseHandler( event : Event ) : void
+            {
+                _file.addEventListener( Event.SELECT , onFileSelect );
+                _file.browseForOpen("Select your ScuttleButt Avatar ", [IMG_FILTER]);
+            }
+            
+            private function validateFile( file : File ) : Boolean
+            {
+                return _filter.exec( file.name ) != null;
+            }
+            
+            private function onLoadError( evt : IOErrorEvent ) : void
+            {
+                trace("[Avatar Load Error]: " + evt.text );
+            }
+            
+            private function onLoadComplete( evt : Event ) : void
+            {
+                //Generate a 64 x 64 avatar
+                avatarBitmap.bitmapData = AvatarUtil.generateAvatar( (_loader.content as Bitmap).bitmapData, 48 );
+            }
+        
+            private function onFileSelect( event:Event ):void
+            {
+                var results : File = event.target as File;
+
+                if( validateFile( results ) )
+                {
+                    _loader.load( new URLRequest( results.url ) );
+                }
+                else
+                {
+                    Alert.show("File is not of JPEG/PNG format or some IO error!", "Avatar Load Error");
+                }
+
+                //Copy the avatar to AppPackageDir and then load
+                results.removeEventListener( Event.SELECT , onFileSelect );
+            }
+        
+            private function okHandler( event : Event ) : void
+            {   
+                _user.name = username.text;
+                _user.group = group.text;
+                _user.location = location.text;
+                _user.status = userStatusComboBox.selectedItem.data;
+                _user.statusMessage = statusMessage.text;
+                _user.avatar = AvatarUtil.convertAvatartoString(avatarBitmap.bitmapData);
+                AppManager.getInstance().settings._notification = notificationCheckBox.selected;
+                
+                AppManager.getInstance().settings.user = _user;
+        
+                try
+                {
+                    var fileService : XMLFileService = new XMLFileService();
+                    fileService.addEventListener( XMLFileServiceEvent.XML_FILE_WRITTEN , fileWrittenHandler );
+                    fileService.saveXMLFileToStorage( AppManager.getInstance().settingFileLocation, XMLParserUtil.buildSettingsXML() );
+                } 
+                catch( err : Error )
+                {
+                    Alert.show( "Error saving settings file. Check parameters.", "Application Manager" );
+                }
+            }
+            
+            private function closeHandler( event : Event ) : void
+            {
+                dispatchEvent( new Event(Event.CANCEL) );
+                PopUpManager.removePopUp( this );
+            }
+        
+            private function fileWrittenHandler( event : Event ) : void
+            {
+                //Tell peers on the LAN about change, 
+                //and tell them to respond as your list will get re-intialized
+                AppManager.getInstance().refreshUserList();
+                //Dispatch event for Object to know the change
+                dispatchEvent( new Event(SettingsPanel.SETTINGS_CHANGE) );
+                closeHandler( null );
+            }
+        
+        ]]>
+    </fx:Script>
+    
+    <!-- The settings panel //-->
+    <mx:VBox id="settingsBox" styleName="settingsBox" width="100%" height="100%">
+        <mx:HBox>   
+            <mx:VBox>   
+                <mx:TextInput id="username" text="{_user.name}" styleName="settingsTextInput"
+                               maxChars="16" toolTip="User Name"/>         <!-- restrict="a-z A-Z 0-9 \- _." -->
+                <mx:TextInput id="group" text="{_user.group}" toolTip="Group" styleName="settingsTextInput" maxChars="16"/>
+                <mx:TextInput id="location" text="{_user.location}" toolTip="Location" styleName="settingsTextInput" maxChars="16"/>
+                <mx:ComboBox id="userStatusComboBox" toolTip="User Status" dataProvider="{userstatus}" styleName="settingsComboBox"
+                             selectedIndex="{_statusIndex}" width="60%" color="0x000000"/>
+
+                <mx:TextArea id="statusMessage" toolTip="Status Message (Max char: 140, like Twitter :)" wordWrap="true" text="{_user.statusMessage}"
+                                 styleName="settingsTextInput" maxChars="140"/> <!-- Tweet! -->
+            </mx:VBox>
+            <mx:VBox styleName="transparentBoxStyle" horizontalAlign="center" width="50">
+                <mx:Image id="avatarImage" horizontalAlign="center" toolTip="Avatar: Your image on the cyberspace!" 
+                          styleName="commonBoxStyle" smoothBitmapContent="true"
+                          mouseDown="browseHandler(event);" buttonMode="true" 
+                          mouseEnabled="true" useHandCursor="true" width="48" height="48"/>
+                <mx:Button icon="@Embed('assets/icons/icon_16.png')" toolTip="Click Here and Select an Avatar" width="40" click="browseHandler(event);"/>
+            </mx:VBox>                
+        </mx:HBox>
+        <mx:CheckBox id="notificationCheckBox" label="Enable Notification" 
+                     styleName="settingsLabel" />
+        
+        <mx:HBox width="100%">
+            <mx:Button id="okButton" label="OK »" click="okHandler(event)"/>
+            <mx:Button id="cancelButton" label="Cancel" click="closeHandler(event)"/>
+			<mx:Spacer width="100%"/>
+			<mx:Image source="@Embed('assets/images/yorg.png')"/>	
+        </mx:HBox>
+
+    </mx:VBox>
+    <!-- /End settings panel //-->
+
+    
+</mx:TitleWindow>
+
+
