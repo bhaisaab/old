@@ -1,0 +1,24 @@
+About
+=====
+
+This INSTALL file is for cross-compiling Windows builds on Linux.
+
+Tools
+=====
+
+g++, qt libs, ld, cmake and other utilities from the build-essential package.
+mingw32 and windows contribs.
+
+Building
+========
+
+Goto the source folder and do:
+  mkdir win32 && cd win32
+  cmake -DCMAKE_TOOLCHAIN_FILE=cmake/toolchain-win32.cmake ..
+  make
+
+Packaging
+=========
+
+To build the Null Soft Installer, do:
+  make installer

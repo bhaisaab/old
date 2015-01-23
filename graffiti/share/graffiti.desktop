@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=0.2.0
+Type=Application
+Name=Graffiti
+Comment=Interactive Whiteboard for LAN
+Exec=graffiti %U
+Icon=graffiti
+Terminal=false
+Categories=Graphics;Qt;
+StartupNotify=true
+Name[en_IN]=graffiti.desktop

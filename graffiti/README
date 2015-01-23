@@ -1,0 +1,10 @@
+About
+=====
+
+Graffiti is an interactive (raster) whiteboard for LAN.
+It was originally created by Abhishek Kumar and Rohit Yadav in 2009 at IIT-BHU.
+
+My best homebrew project ever: Graffiti is a Live XML protocol based Whiteboard
+written in C++/Qt for Linux, Mac OS X and Windows. It's currently optimised for
+LAN featuring automatic peer detection and group chatting.
+

@@ -1,0 +1,32 @@
+About
+=====
+
+This INSTALL file is for building and packaging Graffiti on a general Unix based OS, like
+Linux, Mac.
+
+Tools
+=====
+
+g++, qt libs, ld, cmake and other utilities from the build-essential package.
+
+Building
+========
+
+Goto the source folder and do:
+  mkdir build && cd build
+  cmake ..
+  make
+
+Packaging
+=========
+
+To build the default package automatically set by the build system, do:
+  make package
+
+To force package:
+  cpack -G <pkg-generator-name>
+
+For example:
+  cpack -G RPM
+or,
+  cpack -G DEB
